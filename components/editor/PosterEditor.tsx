@@ -9,6 +9,7 @@ import { ContentControls } from '@/components/editor/ContentControls';
 import { SizeControls } from '@/components/editor/SizeControls';
 import { ExportControls } from '@/components/editor/ExportControls';
 import { CustomCoverUpload } from '@/components/editor/CustomCoverUpload';
+import { PosterDetailsControls } from '@/components/editor/PosterDetailsControls';
 import { TrackNameEditor } from '@/components/editor/TrackNameEditor';
 import { AccordionRoot, AccordionSection } from '@/components/ui/accordion';
 
@@ -43,9 +44,25 @@ export function PosterEditor() {
           </AccordionSection>
 
           <AccordionSection value="personalize" title="Personalize" icon={<Sparkles className="h-4 w-4" />}>
-            <div className="flex flex-col gap-4">
-              <CustomCoverUpload />
-              <TrackNameEditor />
+            <div className="flex flex-col gap-5">
+              <div>
+                <h4 className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-muted">
+                  Details
+                </h4>
+                <PosterDetailsControls />
+              </div>
+              <div>
+                <h4 className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-muted">
+                  Cover
+                </h4>
+                <CustomCoverUpload />
+              </div>
+              <div>
+                <h4 className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-muted">
+                  Tracks
+                </h4>
+                <TrackNameEditor />
+              </div>
             </div>
           </AccordionSection>
         </AccordionRoot>

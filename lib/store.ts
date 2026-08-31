@@ -11,7 +11,15 @@ import {
   TextAlign
 } from '@/types/poster';
 import { demoPosterData } from '@/lib/poster';
-import { formatDuration } from '@/lib/utils';
+import { extractYear, formatDuration } from '@/lib/utils';
+
+/** Frei editierbare Textfelder der Poster-Metadaten. */
+export type EditablePosterField =
+  | 'albumName'
+  | 'artistName'
+  | 'releaseYear'
+  | 'releaseDate'
+  | 'recordLabel';
 
 interface PosterStoreState {
   poster: PosterData;
@@ -68,6 +76,7 @@ interface PosterStoreState {
   setDpi: (dpi: ExportQuality) => void;
   applyPalette: (colors: { background: string; text: string; accent: string }) => void;
   setCustomCover: (url: string) => void;
+  setPosterField: (field: EditablePosterField, value: string) => void;
   updateTrackName: (index: number, name: string) => void;
   updateTrackDuration: (index: number, minutes: number, seconds: number) => void;
   removeTrack: (index: number) => void;
@@ -140,6 +149,17 @@ export const usePosterStore = create<PosterStoreState>()(
           poster: { ...state.poster, coverImage: url },
           isCustomCover: true
         })),
+      setPosterField: (field, value) =>
+        set((state) => {
+          const poster: PosterData = { ...state.poster, [field]: value };
+          // Jahr automatisch aus dem Datum ableiten, damit Templates mit
+          // Jahr-Anzeige konsistent zum Photo-Template (Release Date) bleiben.
+          if (field === 'releaseDate') {
+            const year = extractYear(value);
+            if (year) poster.releaseYear = year;
+          }
+          return { poster };
+        }),
       updateTrackName: (index, name) =>
         set((state) => ({
           poster: {
