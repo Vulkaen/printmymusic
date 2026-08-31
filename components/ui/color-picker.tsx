@@ -31,7 +31,7 @@ export function ColorPicker({ label, value, onChange }: ColorPickerProps) {
         <Popover.Portal>
           <Popover.Content
             sideOffset={8}
-            className="z-50 rounded-xl border border-border bg-surface p-3 shadow-panel"
+            className="z-50 w-48 rounded-xl border border-border bg-surface p-3 shadow-panel"
           >
             <input
               type="color"
@@ -40,7 +40,7 @@ export function ColorPicker({ label, value, onChange }: ColorPickerProps) {
                 setDraft(e.target.value);
                 onChange(e.target.value);
               }}
-              className="h-24 w-40 cursor-pointer rounded-md border-0 bg-transparent"
+              className="h-14 w-full cursor-pointer rounded-md border-0 bg-transparent"
             />
             <input
               type="text"
