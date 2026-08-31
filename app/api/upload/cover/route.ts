@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import { put } from '@vercel/blob';
 import sharp from 'sharp';
+import { rateLimit, tooManyRequests } from '@/lib/rateLimit';
 
 export const runtime = 'nodejs';
 
@@ -15,6 +16,9 @@ export async function POST(request: NextRequest) {
   if (!userId) {
     return NextResponse.json({ error: 'unauthorized', message: 'Bitte einloggen.' }, { status: 401 });
   }
+
+  const limit = rateLimit(`upload:${userId}`, 12, 5 * 60_000);
+  if (!limit.ok) return tooManyRequests(limit.retryAfterSec);
 
   if (!process.env.BLOB_READ_WRITE_TOKEN) {
     return NextResponse.json(

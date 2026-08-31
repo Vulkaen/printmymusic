@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAlbumById, SpotifyApiError } from '@/lib/spotify';
+import { clientIp, rateLimit, tooManyRequests } from '@/lib/rateLimit';
 
 export const runtime = 'nodejs';
 
-export async function GET(_request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+  const limit = rateLimit(`album:${clientIp(request)}`, 80, 60_000);
+  if (!limit.ok) return tooManyRequests(limit.retryAfterSec);
+
   try {
     const album = await getAlbumById(params.id);
     return NextResponse.json(album);

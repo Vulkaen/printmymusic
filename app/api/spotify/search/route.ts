@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { searchAlbums, SpotifyApiError } from '@/lib/spotify';
+import { clientIp, rateLimit, tooManyRequests } from '@/lib/rateLimit';
 
 export const runtime = 'nodejs';
 
@@ -16,6 +17,9 @@ export async function GET(request: NextRequest) {
       { status: 400 }
     );
   }
+
+  const limit = rateLimit(`search:${clientIp(request)}`, 60, 60_000);
+  if (!limit.ok) return tooManyRequests(limit.retryAfterSec);
 
   try {
     const albums = await searchAlbums(query);

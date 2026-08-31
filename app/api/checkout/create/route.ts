@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import Stripe from 'stripe';
 import { CREDIT_PACKS } from '@/lib/creditPacks';
+import { rateLimit, tooManyRequests } from '@/lib/rateLimit';
 
 export const runtime = 'nodejs';
 
@@ -11,6 +12,9 @@ export async function POST(request: NextRequest) {
   if (!userId) {
     return NextResponse.json({ error: 'unauthorized', message: 'Bitte einloggen.' }, { status: 401 });
   }
+
+  const limit = rateLimit(`checkout:${userId}`, 15, 10 * 60_000);
+  if (!limit.ok) return tooManyRequests(limit.retryAfterSec);
 
   if (!process.env.STRIPE_SECRET_KEY) {
     return NextResponse.json(

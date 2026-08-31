@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { clientIp, rateLimit, tooManyRequests } from '@/lib/rateLimit';
 
 export const runtime = 'nodejs';
 
@@ -9,6 +10,9 @@ function isAllowedHost(hostname: string): boolean {
 }
 
 export async function GET(request: NextRequest) {
+  const limit = rateLimit(`imgproxy:${clientIp(request)}`, 120, 60_000);
+  if (!limit.ok) return tooManyRequests(limit.retryAfterSec);
+
   const url = request.nextUrl.searchParams.get('url');
 
   if (!url) {
