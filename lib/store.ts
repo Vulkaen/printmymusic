@@ -11,6 +11,7 @@ import {
   TextAlign
 } from '@/types/poster';
 import { demoPosterData } from '@/lib/poster';
+import { formatDuration } from '@/lib/utils';
 
 interface PosterStoreState {
   poster: PosterData;
@@ -68,6 +69,8 @@ interface PosterStoreState {
   applyPalette: (colors: { background: string; text: string; accent: string }) => void;
   setCustomCover: (url: string) => void;
   updateTrackName: (index: number, name: string) => void;
+  updateTrackDuration: (index: number, minutes: number, seconds: number) => void;
+  removeTrack: (index: number) => void;
   reset: () => void;
 }
 
@@ -142,6 +145,31 @@ export const usePosterStore = create<PosterStoreState>()(
           poster: {
             ...state.poster,
             tracks: state.poster.tracks.map((t, i) => (i === index ? { ...t, name } : t))
+          }
+        })),
+      updateTrackDuration: (index, minutes, seconds) =>
+        set((state) => {
+          const safeMinutes = Math.max(0, Math.floor(minutes) || 0);
+          const safeSeconds = Math.min(59, Math.max(0, Math.floor(seconds) || 0));
+          const durationMs = (safeMinutes * 60 + safeSeconds) * 1000;
+          return {
+            poster: {
+              ...state.poster,
+              tracks: state.poster.tracks.map((t, i) =>
+                i === index ? { ...t, durationMs, duration: formatDuration(durationMs) } : t
+              )
+            }
+          };
+        }),
+      removeTrack: (index) =>
+        set((state) => ({
+          poster: {
+            ...state.poster,
+            // Nach dem Entfernen fortlaufend neu nummerieren, damit die
+            // Trackliste auf dem Poster lückenlos bei 1 beginnt.
+            tracks: state.poster.tracks
+              .filter((_, i) => i !== index)
+              .map((t, i) => ({ ...t, number: i + 1 }))
           }
         })),
       reset: () => set({ ...defaults, poster: demoPosterData() })
