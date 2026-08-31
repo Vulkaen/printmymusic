@@ -13,8 +13,8 @@ const GOLD = '#E8A93B';
 const RUST = '#B23A2E';
 
 const STACK: { template: TemplateId; bg: string; text: string; accent: string; rotate: number; offset: number }[] = [
-  { template: 'dark', bg: '#0B0B0C', text: '#F5F4F2', accent: GOLD, rotate: -8, offset: 10 },
-  { template: 'minimal', bg: PAPER, text: INK, accent: BLUE, rotate: 4, offset: -6 },
+  { template: 'minimal', bg: '#0B0B0C', text: '#F5F4F2', accent: GOLD, rotate: -8, offset: 10 },
+  { template: 'photo', bg: PAPER, text: INK, accent: BLUE, rotate: 4, offset: -6 },
   { template: 'editorial', bg: '#EDEAE1', text: INK, accent: RUST, rotate: -2, offset: 2 }
 ];
 
@@ -27,11 +27,8 @@ const SHOWCASE: {
   rotate: number;
 }[] = [
   { template: 'minimal', bg: '#FAFAF9', text: '#111110', accent: BLUE, label: 'Minimal', rotate: -2 },
-  { template: 'editorial', bg: '#F4F1EC', text: '#1C1B19', accent: RUST, label: 'Editorial', rotate: 1.5 },
-  { template: 'typography', bg: '#111110', text: '#F5F4F2', accent: GOLD, label: 'Typography', rotate: -1.5 },
+  { template: 'editorial', bg: '#0B0B0C', text: '#F5F4F2', accent: RUST, label: 'Editorial', rotate: 1.5 },
   { template: 'split', bg: '#EFEDE4', text: '#14120F', accent: BLUE, label: 'Split', rotate: 2 },
-  { template: 'dark', bg: '#0B0B0C', text: '#F5F4F2', accent: GOLD, label: 'Dark', rotate: -2.5 },
-  { template: 'grid', bg: '#FFFFFF', text: '#111110', accent: RUST, label: 'Grid', rotate: 1 },
   { template: 'photo', bg: '#F5F3EC', text: '#14120F', accent: RUST, label: 'Photo', rotate: -1.5 },
   { template: 'player', bg: '#111110', text: '#F5F4F2', accent: GOLD, label: 'Player', rotate: 2 }
 ];
@@ -130,9 +127,10 @@ export default function LandingPage() {
           gestreute Poster-Ausschnitte wie auf einer Pinnwand. */}
       <section className="bg-canvas px-6 py-20">
         <div className="mx-auto max-w-6xl">
-          <h2 className="font-grotesk text-3xl font-bold text-ink">Eight ways to frame it</h2>
+          <h2 className="font-grotesk text-3xl font-bold text-ink">Five layouts, light or dark</h2>
           <p className="mt-2 max-w-md text-muted">
-            Every layout pulls from the same album data — pick whichever fits your wall.
+            Every layout pulls from the same album data and switches between a white or dark color
+            mode — pick whichever fits your wall.
           </p>
 
           <div className="mt-14 flex flex-wrap justify-center gap-x-10 gap-y-14">

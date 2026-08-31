@@ -17,15 +17,7 @@ export interface PosterData {
   spotifyUrl: string | null;
 }
 
-export type TemplateId =
-  | 'minimal'
-  | 'editorial'
-  | 'typography'
-  | 'split'
-  | 'dark'
-  | 'grid'
-  | 'photo'
-  | 'player';
+export type TemplateId = 'minimal' | 'editorial' | 'split' | 'photo' | 'player';
 
 export type FontId = 'inter' | 'helvetica' | 'playfair' | 'dmsans' | 'grotesk';
 
