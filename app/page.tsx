@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import { PosterRenderer } from '@/components/poster/PosterRenderer';
 import { demoPosterData } from '@/lib/poster';
 import { TemplateId } from '@/types/poster';
@@ -71,6 +72,16 @@ export default function LandingPage() {
           </div>
           <div className="flex items-center gap-3">
             <ThemeToggle />
+            <SignedOut>
+              <SignInButton mode="modal">
+                <button className="rounded-lg border border-[#3A3833] px-3 py-2 text-sm font-medium text-[#F5F4F2] transition-colors hover:border-[#F5F4F2]/50">
+                  Sign in
+                </button>
+              </SignInButton>
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
             <Link
               href="/create"
               className="rounded-lg px-4 py-2 text-sm font-semibold text-[#14120F] transition-transform hover:scale-[1.02] active:scale-[0.98]"

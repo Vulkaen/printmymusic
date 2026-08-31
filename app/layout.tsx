@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { ClerkProvider } from '@clerk/nextjs';
 import { Inter, Playfair_Display, DM_Sans, Space_Grotesk } from 'next/font/google';
 import './globals.css';
 
@@ -22,30 +23,32 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="de">
-      <head>
-        {/* Verhindert kurzes Aufblitzen des falschen Farbmodus beim Laden:
-            wendet die gespeicherte Theme-Einstellung an, bevor React
-            hydratisiert. */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              try {
-                var stored = localStorage.getItem('printmymusic-theme');
-                var theme = stored ? JSON.parse(stored).state.theme : 'light';
-                if (theme === 'dark') {
-                  document.documentElement.classList.add('dark');
-                }
-              } catch (e) {}
-            `
-          }}
-        />
-      </head>
-      <body
-        className={`${inter.variable} ${playfair.variable} ${dmSans.variable} ${grotesk.variable} font-sans`}
-      >
-        {children}
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="de">
+        <head>
+          {/* Verhindert kurzes Aufblitzen des falschen Farbmodus beim Laden:
+              wendet die gespeicherte Theme-Einstellung an, bevor React
+              hydratisiert. */}
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                try {
+                  var stored = localStorage.getItem('printmymusic-theme');
+                  var theme = stored ? JSON.parse(stored).state.theme : 'light';
+                  if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                  }
+                } catch (e) {}
+              `
+            }}
+          />
+        </head>
+        <body
+          className={`${inter.variable} ${playfair.variable} ${dmSans.variable} ${grotesk.variable} font-sans`}
+        >
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

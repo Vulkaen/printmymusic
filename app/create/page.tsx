@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Suspense, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ArrowLeft, Sparkles } from 'lucide-react';
+import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import { PosterEditor } from '@/components/editor/PosterEditor';
 import { PosterPreview } from '@/components/poster/PosterPreview';
 import { usePosterStore } from '@/lib/store';
@@ -63,7 +64,19 @@ export default function CreatePage() {
           <ArrowLeft className="h-4 w-4" />
           PrintMyMusic
         </Link>
-        <ThemeToggle />
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <SignedOut>
+            <SignInButton mode="modal">
+              <button className="rounded-lg border border-border px-2.5 py-1.5 text-xs font-medium text-ink transition-colors hover:border-ink/30">
+                Sign in
+              </button>
+            </SignInButton>
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+        </div>
       </header>
 
       {/* Mobile: Preview oben */}
@@ -81,7 +94,19 @@ export default function CreatePage() {
             </span>
             PrintMyMusic
           </Link>
-          <ThemeToggle />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <SignedOut>
+              <SignInButton mode="modal">
+                <button className="rounded-lg border border-border px-2.5 py-1.5 text-xs font-medium text-ink transition-colors hover:border-ink/30">
+                  Sign in
+                </button>
+              </SignInButton>
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+          </div>
         </div>
         <div className="h-[calc(100%-57px)]">
           <PosterEditor />
