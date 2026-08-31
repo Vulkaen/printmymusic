@@ -42,6 +42,8 @@ interface PosterStoreState {
 
   dpi: ExportQuality;
 
+  isCustomCover: boolean;
+
   setPoster: (poster: PosterData) => void;
   setTemplate: (template: TemplateId) => void;
   setBackgroundColor: (color: string) => void;
@@ -64,6 +66,8 @@ interface PosterStoreState {
   setOrientation: (orientation: Orientation) => void;
   setDpi: (dpi: ExportQuality) => void;
   applyPalette: (colors: { background: string; text: string; accent: string }) => void;
+  setCustomCover: (url: string) => void;
+  updateTrackName: (index: number, name: string) => void;
   reset: () => void;
 }
 
@@ -95,7 +99,9 @@ const defaults = {
   customHeightMm: 420,
   orientation: 'portrait' as Orientation,
 
-  dpi: 'print300' as ExportQuality
+  dpi: 'print300' as ExportQuality,
+
+  isCustomCover: false
 };
 
 export const usePosterStore = create<PosterStoreState>()(
@@ -103,7 +109,7 @@ export const usePosterStore = create<PosterStoreState>()(
     (set) => ({
       ...defaults,
 
-      setPoster: (poster) => set({ poster }),
+      setPoster: (poster) => set({ poster, isCustomCover: false }),
       setTemplate: (template) => set({ template }),
       setBackgroundColor: (backgroundColor) => set({ backgroundColor }),
       setTextColor: (textColor) => set({ textColor }),
@@ -126,6 +132,18 @@ export const usePosterStore = create<PosterStoreState>()(
       setDpi: (dpi) => set({ dpi }),
       applyPalette: ({ background, text, accent }) =>
         set({ backgroundColor: background, textColor: text, accentColor: accent }),
+      setCustomCover: (url) =>
+        set((state) => ({
+          poster: { ...state.poster, coverImage: url },
+          isCustomCover: true
+        })),
+      updateTrackName: (index, name) =>
+        set((state) => ({
+          poster: {
+            ...state.poster,
+            tracks: state.poster.tracks.map((t, i) => (i === index ? { ...t, name } : t))
+          }
+        })),
       reset: () => set({ ...defaults, poster: demoPosterData() })
     }),
     {

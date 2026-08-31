@@ -26,11 +26,13 @@ const QUALITY_OPTIONS: { value: ExportQuality; label: string; hint: string }[] =
 
 export function ExportControls() {
   const state = usePosterStore();
+  const isCustomCover = usePosterStore((s) => s.isCustomCover);
   const [format, setFormat] = useState<ExportFormat>('png');
   const [isExporting, setIsExporting] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { credits, isSignedIn, refresh } = useCredits();
+  const cost = isCustomCover ? 2 : 1;
 
   async function handleExport() {
     setIsExporting(true);
@@ -42,7 +44,7 @@ export function ExportControls() {
       const consumeRes = await fetch('/api/credits/consume', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cost: 1 })
+        body: JSON.stringify({ cost })
       });
       const consumeData = await consumeRes.json();
 
@@ -128,7 +130,7 @@ export function ExportControls() {
           ) : (
             <>
               <Download className="h-4 w-4" />
-              Export poster (1 credit)
+              Export poster ({cost} credit{cost > 1 ? 's' : ''})
             </>
           )}
         </Button>

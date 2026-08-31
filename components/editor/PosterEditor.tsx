@@ -1,6 +1,6 @@
 'use client';
 
-import { Music, LayoutGrid, Palette, Type, ListChecks, Ruler, Download } from 'lucide-react';
+import { Music, LayoutGrid, Palette, Type, ListChecks, Ruler, Download, Sparkles } from 'lucide-react';
 import { AlbumSearch } from '@/components/spotify/AlbumSearch';
 import { TemplateSelector } from '@/components/editor/TemplateSelector';
 import { ColorControls } from '@/components/editor/ColorControls';
@@ -8,6 +8,8 @@ import { TypographyControls } from '@/components/editor/TypographyControls';
 import { ContentControls } from '@/components/editor/ContentControls';
 import { SizeControls } from '@/components/editor/SizeControls';
 import { ExportControls } from '@/components/editor/ExportControls';
+import { CustomCoverUpload } from '@/components/editor/CustomCoverUpload';
+import { TrackNameEditor } from '@/components/editor/TrackNameEditor';
 import { AccordionRoot, AccordionSection } from '@/components/ui/accordion';
 
 export function PosterEditor() {
@@ -38,6 +40,13 @@ export function PosterEditor() {
 
           <AccordionSection value="size" title="Size" icon={<Ruler className="h-4 w-4" />}>
             <SizeControls />
+          </AccordionSection>
+
+          <AccordionSection value="personalize" title="Personalize" icon={<Sparkles className="h-4 w-4" />}>
+            <div className="flex flex-col gap-4">
+              <CustomCoverUpload />
+              <TrackNameEditor />
+            </div>
           </AccordionSection>
         </AccordionRoot>
       </div>

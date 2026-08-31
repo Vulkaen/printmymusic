@@ -70,5 +70,9 @@ export function proxiedImageUrl(originalUrl: string | null): string | null {
   // Bereits eingebettete Data-URLs (z.B. beim Export vorab geladen) brauchen
   // keinen Proxy - sie sind schon lokal und CORS-sicher.
   if (originalUrl.startsWith('data:')) return originalUrl;
+  // Eigene Vercel-Blob-Uploads (personalisierte Cover) sind bereits mit
+  // offenem CORS ausgeliefert und müssen nicht über den Proxy laufen, der
+  // ohnehin nur Deezer-Domains erlaubt.
+  if (originalUrl.includes('.blob.vercel-storage.com')) return originalUrl;
   return `/api/image-proxy?url=${encodeURIComponent(originalUrl)}`;
 }
