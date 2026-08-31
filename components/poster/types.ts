@@ -1,4 +1,4 @@
-import { PosterData, ColumnCount, FontId, TextAlign } from '@/types/poster';
+import { PosterData, ColumnCount, FontId, TextAlign, PosterLabels } from '@/types/poster';
 
 export interface PosterStyleSettings {
   backgroundColor: string;
@@ -15,6 +15,7 @@ export interface PosterStyleSettings {
   showTrackNumbers: boolean;
   showDurations: boolean;
   columns: ColumnCount;
+  labels: PosterLabels;
 }
 
 export interface PosterTemplateProps {

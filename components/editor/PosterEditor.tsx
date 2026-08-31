@@ -10,6 +10,7 @@ import { SizeControls } from '@/components/editor/SizeControls';
 import { ExportControls } from '@/components/editor/ExportControls';
 import { CustomCoverUpload } from '@/components/editor/CustomCoverUpload';
 import { PosterDetailsControls } from '@/components/editor/PosterDetailsControls';
+import { LabelControls } from '@/components/editor/LabelControls';
 import { TrackNameEditor } from '@/components/editor/TrackNameEditor';
 import { AccordionRoot, AccordionSection } from '@/components/ui/accordion';
 
@@ -50,6 +51,12 @@ export function PosterEditor() {
                   Details
                 </h4>
                 <PosterDetailsControls />
+              </div>
+              <div>
+                <h4 className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-muted">
+                  Template labels
+                </h4>
+                <LabelControls />
               </div>
               <div>
                 <h4 className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-muted">

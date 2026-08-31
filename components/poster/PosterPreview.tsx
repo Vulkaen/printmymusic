@@ -3,6 +3,7 @@
 import { forwardRef, useEffect, useRef, useState } from 'react';
 import { usePosterStore } from '@/lib/store';
 import { PosterRenderer } from '@/components/poster/PosterRenderer';
+import { DEFAULT_LABELS } from '@/lib/poster';
 import { resolveDimensionsMm, getPosterSize } from '@/lib/dimensions';
 
 // Feste Design-Referenzbreite in px, auf die alle Templates ihre relativen
@@ -92,7 +93,8 @@ export const PosterPreview = forwardRef<HTMLDivElement>(function PosterPreview(_
                 showYear: state.showYear,
                 showTrackNumbers: state.showTrackNumbers,
                 showDurations: state.showDurations,
-                columns: state.columns
+                columns: state.columns,
+                labels: { ...DEFAULT_LABELS, ...state.labels }
               }}
             />
           </div>

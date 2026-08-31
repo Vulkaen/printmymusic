@@ -19,6 +19,19 @@ export interface PosterData {
 
 export type TemplateId = 'minimal' | 'editorial' | 'split' | 'photo' | 'player';
 
+/**
+ * Frei überschreibbare, fest im Template verankerte Beschriftungen
+ * (keine Albumdaten). Pro Template nur eine Teilmenge relevant.
+ */
+export type LabelKey =
+  | 'photoAlbumBy'
+  | 'photoReleaseDate'
+  | 'photoRecordLabel'
+  | 'photoAlbumLength'
+  | 'playerCurrentTime';
+
+export type PosterLabels = Record<LabelKey, string>;
+
 export type FontId = 'inter' | 'helvetica' | 'playfair' | 'dmsans' | 'grotesk';
 
 export type ColumnCount = 1 | 2 | 3;
@@ -78,4 +91,6 @@ export interface PosterState {
   orientation: Orientation;
 
   dpi: ExportQuality;
+
+  labels: PosterLabels;
 }

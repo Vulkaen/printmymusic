@@ -4,13 +4,15 @@ import {
   ColumnCount,
   ExportQuality,
   FontId,
+  LabelKey,
   Orientation,
   PosterData,
+  PosterLabels,
   PosterSizeId,
   TemplateId,
   TextAlign
 } from '@/types/poster';
-import { demoPosterData } from '@/lib/poster';
+import { demoPosterData, DEFAULT_LABELS } from '@/lib/poster';
 import { extractYear, formatDuration } from '@/lib/utils';
 
 /** Frei editierbare Textfelder der Poster-Metadaten. */
@@ -51,6 +53,8 @@ interface PosterStoreState {
 
   dpi: ExportQuality;
 
+  labels: PosterLabels;
+
   isCustomCover: boolean;
 
   setPoster: (poster: PosterData) => void;
@@ -77,6 +81,8 @@ interface PosterStoreState {
   applyPalette: (colors: { background: string; text: string; accent: string }) => void;
   setCustomCover: (url: string) => void;
   setPosterField: (field: EditablePosterField, value: string) => void;
+  setLabel: (key: LabelKey, value: string) => void;
+  resetLabels: () => void;
   updateTrackName: (index: number, name: string) => void;
   updateTrackDuration: (index: number, minutes: number, seconds: number) => void;
   removeTrack: (index: number) => void;
@@ -112,6 +118,8 @@ const defaults = {
   orientation: 'portrait' as Orientation,
 
   dpi: 'print300' as ExportQuality,
+
+  labels: { ...DEFAULT_LABELS } as PosterLabels,
 
   isCustomCover: false
 };
@@ -160,6 +168,9 @@ export const usePosterStore = create<PosterStoreState>()(
           }
           return { poster };
         }),
+      setLabel: (key, value) =>
+        set((state) => ({ labels: { ...state.labels, [key]: value } })),
+      resetLabels: () => set({ labels: { ...DEFAULT_LABELS } }),
       updateTrackName: (index, name) =>
         set((state) => ({
           poster: {

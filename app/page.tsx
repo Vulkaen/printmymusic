@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import { PosterRenderer } from '@/components/poster/PosterRenderer';
-import { demoPosterData } from '@/lib/poster';
+import { demoPosterData, DEFAULT_LABELS } from '@/lib/poster';
 import { TemplateId } from '@/types/poster';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 
@@ -49,7 +49,8 @@ function baseTemplateStyle(item: { bg: string; text: string; accent: string }) {
     showYear: true,
     showTrackNumbers: true,
     showDurations: true,
-    columns: 2 as const
+    columns: 2 as const,
+    labels: DEFAULT_LABELS
   };
 }
 

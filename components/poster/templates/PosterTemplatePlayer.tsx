@@ -73,7 +73,7 @@ export function PosterTemplatePlayer({ poster, style, baseWidth }: PosterTemplat
             opacity: 0.5
           }}
         >
-          <span>0:41</span>
+          <span>{style.labels.playerCurrentTime}</span>
           <span>{totalLength}</span>
         </div>
       </div>

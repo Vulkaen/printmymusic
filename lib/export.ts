@@ -5,7 +5,7 @@ import jsPDF from 'jspdf';
 import { ExportFormat, PosterState } from '@/types/poster';
 import { PosterRenderer } from '@/components/poster/PosterRenderer';
 import { resolveDimensionsMm, resolvePixelDimensions } from '@/lib/dimensions';
-import { proxiedImageUrl } from '@/lib/poster';
+import { DEFAULT_LABELS, proxiedImageUrl } from '@/lib/poster';
 
 export interface ExportOptions {
   format: ExportFormat;
@@ -105,7 +105,8 @@ async function renderPosterToCanvas(state: PosterState): Promise<HTMLCanvasEleme
           showYear: state.showYear,
           showTrackNumbers: state.showTrackNumbers,
           showDurations: state.showDurations,
-          columns: state.columns
+          columns: state.columns,
+          labels: { ...DEFAULT_LABELS, ...state.labels }
         }
       })
     );

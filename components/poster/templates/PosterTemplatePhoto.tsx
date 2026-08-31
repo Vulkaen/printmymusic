@@ -63,7 +63,7 @@ export function PosterTemplatePhoto({ poster, style, baseWidth }: PosterTemplate
               lineHeight: 1.4
             }}
           >
-            An album by {poster.artistName}
+            {[style.labels.photoAlbumBy, poster.artistName].filter(Boolean).join(' ')}
           </p>
         </div>
 
@@ -77,13 +77,13 @@ export function PosterTemplatePhoto({ poster, style, baseWidth }: PosterTemplate
             style={{ minWidth: baseWidth * 0.19 }}
           >
             {releaseDateLabel && (
-              <MetaBlock label="Release Date" value={releaseDateLabel} baseWidth={baseWidth} color={style.textColor} />
+              <MetaBlock label={style.labels.photoReleaseDate} value={releaseDateLabel} baseWidth={baseWidth} color={style.textColor} />
             )}
             {poster.recordLabel && (
-              <MetaBlock label="Release Label" value={poster.recordLabel} baseWidth={baseWidth} color={style.textColor} />
+              <MetaBlock label={style.labels.photoRecordLabel} value={poster.recordLabel} baseWidth={baseWidth} color={style.textColor} />
             )}
             {poster.tracks.length > 0 && (
-              <MetaBlock label="Album Length" value={albumLength} baseWidth={baseWidth} color={style.textColor} />
+              <MetaBlock label={style.labels.photoAlbumLength} value={albumLength} baseWidth={baseWidth} color={style.textColor} />
             )}
           </div>
         </div>

@@ -1,6 +1,15 @@
 import { SpotifyAlbumDetail } from '@/types/spotify';
-import { PosterData, Track } from '@/types/poster';
+import { PosterData, PosterLabels, Track } from '@/types/poster';
 import { formatDuration } from '@/lib/utils';
+
+/** Standard-Beschriftungen der Templates; per Editor überschreibbar. */
+export const DEFAULT_LABELS: PosterLabels = {
+  photoAlbumBy: 'An album by',
+  photoReleaseDate: 'Release Date',
+  photoRecordLabel: 'Release Label',
+  photoAlbumLength: 'Album Length',
+  playerCurrentTime: '0:41'
+};
 
 export function spotifyAlbumToPosterData(album: SpotifyAlbumDetail): PosterData {
   const tracks: Track[] = album.tracks
