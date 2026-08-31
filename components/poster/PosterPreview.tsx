@@ -3,7 +3,7 @@
 import { forwardRef, useEffect, useRef, useState } from 'react';
 import { usePosterStore } from '@/lib/store';
 import { PosterRenderer } from '@/components/poster/PosterRenderer';
-import { resolveDimensionsMm } from '@/lib/dimensions';
+import { resolveDimensionsMm, getPosterSize } from '@/lib/dimensions';
 
 // Feste Design-Referenzbreite in px, auf die alle Templates ihre relativen
 // Größen (baseWidth * factor) beziehen. Export nutzt denselben Wert für
@@ -11,7 +11,7 @@ import { resolveDimensionsMm } from '@/lib/dimensions';
 export const DESIGN_WIDTH = 1000;
 
 export const PosterPreview = forwardRef<HTMLDivElement>(function PosterPreview(_props, ref) {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const scaleContainerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
 
   const state = usePosterStore();
@@ -25,7 +25,7 @@ export const PosterPreview = forwardRef<HTMLDivElement>(function PosterPreview(_
   const designHeight = DESIGN_WIDTH / aspectRatio;
 
   useEffect(() => {
-    const el = containerRef.current;
+    const el = scaleContainerRef.current;
     if (!el) return;
 
     function updateScale() {
@@ -43,49 +43,64 @@ export const PosterPreview = forwardRef<HTMLDivElement>(function PosterPreview(_
     return () => observer.disconnect();
   }, [designHeight]);
 
+  // Zeigt Format + reale Maße als Text an. Wichtig, weil die Vorschau sich
+  // immer auf die verfügbare Bildschirmfläche einpasst - viele Formate
+  // (A4/A3/A2) haben dasselbe Seitenverhältnis und sehen daher optisch
+  // identisch groß aus, obwohl die tatsächliche Druckgröße stark variiert.
+  const sizeLabel =
+    state.posterSizeId === 'custom' ? 'Custom' : getPosterSize(state.posterSizeId).label;
+  const widthLabel = Math.round(widthMm);
+  const heightLabel = Math.round(heightMm);
+  const orientationLabel = state.orientation === 'portrait' ? 'Portrait' : 'Landscape';
+
   return (
-    <div
-      ref={containerRef}
-      className="flex h-full w-full items-center justify-center overflow-hidden"
-    >
+    <div className="flex h-full w-full flex-col items-center justify-center gap-3">
       <div
-        style={{
-          width: DESIGN_WIDTH * scale,
-          height: designHeight * scale
-        }}
+        ref={scaleContainerRef}
+        className="flex w-full flex-1 items-center justify-center overflow-hidden"
       >
         <div
-          ref={ref}
-          className="origin-top-left overflow-hidden shadow-panel"
           style={{
-            width: DESIGN_WIDTH,
-            height: designHeight,
-            transform: `scale(${scale})`
+            width: DESIGN_WIDTH * scale,
+            height: designHeight * scale
           }}
         >
-          <PosterRenderer
-            template={state.template}
-            poster={state.poster}
-            baseWidth={DESIGN_WIDTH}
+          <div
+            ref={ref}
+            className="origin-top-left overflow-hidden shadow-panel"
             style={{
-              backgroundColor: state.backgroundColor,
-              textColor: state.textColor,
-              accentColor: state.accentColor,
-              fontFamily: state.fontFamily,
-              titleSize: state.titleSize,
-              artistSize: state.artistSize,
-              trackSize: state.trackSize,
-              textAlign: state.textAlign,
-              coverSize: state.coverSize,
-              spacing: state.spacing,
-              showYear: state.showYear,
-              showTrackNumbers: state.showTrackNumbers,
-              showDurations: state.showDurations,
-              columns: state.columns
+              width: DESIGN_WIDTH,
+              height: designHeight,
+              transform: `scale(${scale})`
             }}
-          />
+          >
+            <PosterRenderer
+              template={state.template}
+              poster={state.poster}
+              baseWidth={DESIGN_WIDTH}
+              style={{
+                backgroundColor: state.backgroundColor,
+                textColor: state.textColor,
+                accentColor: state.accentColor,
+                fontFamily: state.fontFamily,
+                titleSize: state.titleSize,
+                artistSize: state.artistSize,
+                trackSize: state.trackSize,
+                textAlign: state.textAlign,
+                coverSize: state.coverSize,
+                spacing: state.spacing,
+                showYear: state.showYear,
+                showTrackNumbers: state.showTrackNumbers,
+                showDurations: state.showDurations,
+                columns: state.columns
+              }}
+            />
+          </div>
         </div>
       </div>
+      <span className="shrink-0 text-xs font-medium text-muted">
+        {sizeLabel} · {widthLabel} × {heightLabel} mm · {orientationLabel}
+      </span>
     </div>
   );
 });

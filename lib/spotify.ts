@@ -160,6 +160,7 @@ interface DeezerAlbumDetail {
   cover_big?: string;
   cover_xl?: string;
   release_date?: string;
+  label?: string;
   nb_tracks?: number;
   link?: string;
   artist: DeezerArtist;
@@ -197,6 +198,7 @@ export async function getAlbumById(albumId: string): Promise<SpotifyAlbumDetail>
     }),
     releaseDate: data.release_date ?? '',
     releaseYear: extractYear(data.release_date ?? ''),
+    recordLabel: data.label ?? null,
     totalTracks: data.nb_tracks ?? tracks.length,
     spotifyUrl: data.link ?? `https://www.deezer.com/album/${data.id}`,
     tracks

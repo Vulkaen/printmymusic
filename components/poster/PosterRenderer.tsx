@@ -6,6 +6,8 @@ import { PosterTemplateTypography } from '@/components/poster/templates/PosterTe
 import { PosterTemplateSplit } from '@/components/poster/templates/PosterTemplateSplit';
 import { PosterTemplateDark } from '@/components/poster/templates/PosterTemplateDark';
 import { PosterTemplateGrid } from '@/components/poster/templates/PosterTemplateGrid';
+import { PosterTemplatePhoto } from '@/components/poster/templates/PosterTemplatePhoto';
+import { PosterTemplatePlayer } from '@/components/poster/templates/PosterTemplatePlayer';
 
 interface PosterRendererProps {
   template: TemplateId;
@@ -20,7 +22,9 @@ const TEMPLATE_MAP = {
   typography: PosterTemplateTypography,
   split: PosterTemplateSplit,
   dark: PosterTemplateDark,
-  grid: PosterTemplateGrid
+  grid: PosterTemplateGrid,
+  photo: PosterTemplatePhoto,
+  player: PosterTemplatePlayer
 } as const;
 
 export function PosterRenderer({ template, poster, style, baseWidth }: PosterRendererProps) {

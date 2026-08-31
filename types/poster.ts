@@ -10,12 +10,22 @@ export interface PosterData {
   albumName: string;
   artistName: string;
   releaseYear: string;
+  releaseDate: string; // vollständiges Datum, z.B. "2000-07-21" (kann leer sein)
+  recordLabel: string | null;
   coverImage: string | null;
   tracks: Track[];
   spotifyUrl: string | null;
 }
 
-export type TemplateId = 'minimal' | 'editorial' | 'typography' | 'split' | 'dark' | 'grid';
+export type TemplateId =
+  | 'minimal'
+  | 'editorial'
+  | 'typography'
+  | 'split'
+  | 'dark'
+  | 'grid'
+  | 'photo'
+  | 'player';
 
 export type FontId = 'inter' | 'helvetica' | 'playfair' | 'dmsans' | 'grotesk';
 

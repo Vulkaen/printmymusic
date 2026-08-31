@@ -20,6 +20,8 @@ export function spotifyAlbumToPosterData(album: SpotifyAlbumDetail): PosterData 
     albumName: album.name,
     artistName: album.artists.map((a) => a.name).join(', '),
     releaseYear: album.releaseYear,
+    releaseDate: album.releaseDate,
+    recordLabel: album.recordLabel,
     coverImage: bestImage?.url ?? null,
     tracks,
     spotifyUrl: album.spotifyUrl
@@ -32,6 +34,8 @@ export function demoPosterData(): PosterData {
     albumName: 'Choose Your Album',
     artistName: 'Artist Name',
     releaseYear: '2026',
+    releaseDate: '2026-01-01',
+    recordLabel: 'Independent',
     coverImage: null,
     tracks: Array.from({ length: 10 }, (_, i) => ({
       number: i + 1,
@@ -52,6 +56,12 @@ export function splitTracksIntoColumns(tracks: Track[], columns: number): Track[
     result.push(tracks.slice(i * perColumn, (i + 1) * perColumn));
   }
   return result;
+}
+
+/** Summiert alle Tracklängen zur Gesamtlaufzeit des Albums (mm:ss). */
+export function sumTrackDurations(tracks: Track[]): string {
+  const totalMs = tracks.reduce((sum, t) => sum + t.durationMs, 0);
+  return formatDuration(totalMs);
 }
 
 /** Leitet über die Image-Proxy-Route eine CORS-sichere URL für Canvas-Export ab. */

@@ -17,6 +17,14 @@ export function extractYear(releaseDate: string): string {
   return match ? match[0] : releaseDate;
 }
 
+/** Formatiert ein ISO-Datum ("2000-07-21") als lesbares Datum ("July 21, 2000"). */
+export function formatReleaseDate(dateStr: string): string {
+  if (!dateStr) return '';
+  const date = new Date(dateStr);
+  if (Number.isNaN(date.getTime())) return '';
+  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
 export function debounce<Args extends unknown[]>(
   fn: (...args: Args) => void,
   delayMs: number

@@ -40,6 +40,7 @@ export interface SpotifyAlbumDetail {
   images: SpotifyImage[];
   releaseDate: string;
   releaseYear: string;
+  recordLabel: string | null;
   totalTracks: number;
   spotifyUrl: string;
   tracks: SpotifyTrackItem[];

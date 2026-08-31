@@ -10,7 +10,9 @@ const TEMPLATES: { id: TemplateId; label: string }[] = [
   { id: 'typography', label: 'Typography' },
   { id: 'split', label: 'Split' },
   { id: 'dark', label: 'Dark' },
-  { id: 'grid', label: 'Grid' }
+  { id: 'grid', label: 'Grid' },
+  { id: 'photo', label: 'Photo' },
+  { id: 'player', label: 'Player' }
 ];
 
 export function TemplateSelector() {
