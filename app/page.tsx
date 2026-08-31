@@ -4,6 +4,7 @@ import { PosterRenderer } from '@/components/poster/PosterRenderer';
 import { demoPosterData, DEFAULT_LABELS } from '@/lib/poster';
 import { TemplateId } from '@/types/poster';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { HeaderCredits } from '@/components/ui/header-credits';
 
 // Feste Marken-Töne für die Hero-Sektion, bewusst unabhängig vom Hell-/Dunkel-
 // Umschalter der App (die Hero-Farbwelt bleibt konstant als Wiedererkennung).
@@ -81,15 +82,9 @@ export default function LandingPage() {
               </SignInButton>
             </SignedOut>
             <SignedIn>
+              <HeaderCredits />
               <UserButton />
             </SignedIn>
-            <Link
-              href="/create"
-              className="rounded-lg px-4 py-2 text-sm font-semibold text-[#14120F] transition-transform hover:scale-[1.02] active:scale-[0.98]"
-              style={{ backgroundColor: GOLD }}
-            >
-              Create your poster
-            </Link>
           </div>
         </header>
 
