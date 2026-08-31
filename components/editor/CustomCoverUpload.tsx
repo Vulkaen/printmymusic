@@ -5,6 +5,7 @@ import { Upload, Loader2 } from 'lucide-react';
 import { useAuth, SignInButton } from '@clerk/nextjs';
 import { usePosterStore } from '@/lib/store';
 import { prepareCoverImage } from '@/lib/image';
+import { useT } from '@/lib/i18n';
 
 const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 const SERVER_MAX_BYTES = 4 * 1024 * 1024;
@@ -12,6 +13,7 @@ const SERVER_MAX_BYTES = 4 * 1024 * 1024;
 type Phase = 'idle' | 'optimizing' | 'uploading';
 
 export function CustomCoverUpload() {
+  const t = useT();
   const { isSignedIn } = useAuth();
   const setCustomCover = usePosterStore((s) => s.setCustomCover);
   const isCustomCover = usePosterStore((s) => s.isCustomCover);
@@ -28,7 +30,7 @@ export function CustomCoverUpload() {
     setError(null);
 
     if (!ACCEPTED_TYPES.includes(file.type)) {
-      setError('Nur JPG, PNG oder WebP sind erlaubt.');
+      setError(t('cover.invalidType'));
       if (inputRef.current) inputRef.current.value = '';
       return;
     }
@@ -44,7 +46,7 @@ export function CustomCoverUpload() {
         upload = await prepareCoverImage(file);
       } catch {
         if (file.size > SERVER_MAX_BYTES) {
-          setError('Bild ist zu groß (max. 4 MB) und ließ sich nicht automatisch verkleinern.');
+          setError(t('cover.tooLargeNoShrink'));
           return;
         }
         upload = file;
@@ -58,13 +60,13 @@ export function CustomCoverUpload() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.message ?? 'Upload fehlgeschlagen.');
+        setError(t('cover.uploadFailed'));
         return;
       }
 
       setCustomCover(data.url);
     } catch {
-      setError('Upload fehlgeschlagen.');
+      setError(t('cover.uploadFailed'));
     } finally {
       setPhase('idle');
       if (inputRef.current) inputRef.current.value = '';
@@ -74,10 +76,10 @@ export function CustomCoverUpload() {
   if (!isSignedIn) {
     return (
       <div className="rounded-lg border border-dashed border-border p-4 text-center">
-        <p className="mb-2 text-xs text-muted">Sign in to upload your own cover art.</p>
+        <p className="mb-2 text-xs text-muted">{t('cover.signInPrompt')}</p>
         <SignInButton mode="modal">
           <button type="button" className="text-xs font-medium text-ink underline">
-            Sign in
+            {t('nav.signIn')}
           </button>
         </SignInButton>
       </div>
@@ -86,12 +88,12 @@ export function CustomCoverUpload() {
 
   const label =
     phase === 'optimizing'
-      ? 'Optimizing image...'
+      ? t('cover.optimizing')
       : phase === 'uploading'
-        ? 'Uploading...'
+        ? t('cover.uploading')
         : isCustomCover
-          ? 'Replace cover'
-          : 'Upload your own cover';
+          ? t('cover.replace')
+          : t('cover.upload');
 
   return (
     <div className="flex flex-col gap-2">
@@ -112,12 +114,8 @@ export function CustomCoverUpload() {
         {isBusy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
         {label}
       </label>
-      <p className="text-xs text-muted">
-        JPG, PNG or WebP. Large photos are shrunk automatically before upload.
-      </p>
-      {isCustomCover && (
-        <p className="text-xs text-muted">Custom cover active · costs 2 credits to export</p>
-      )}
+      <p className="text-xs text-muted">{t('cover.hint')}</p>
+      {isCustomCover && <p className="text-xs text-muted">{t('cover.active')}</p>}
       {error && <p className="text-xs text-red-600">{error}</p>}
     </div>
   );

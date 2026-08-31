@@ -11,6 +11,8 @@ import { usePosterStore } from '@/lib/store';
 import { spotifyAlbumToPosterData } from '@/lib/poster';
 import { TemplateId } from '@/types/poster';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { LanguageToggle } from '@/components/ui/language-toggle';
+import { useT } from '@/lib/i18n';
 
 function ShareableUrlSync() {
   const searchParams = useSearchParams();
@@ -53,6 +55,8 @@ function ShareableUrlSync() {
 }
 
 export default function CreatePage() {
+  const t = useT();
+
   return (
     <div className="flex h-screen flex-col bg-canvas md:flex-row">
       <Suspense fallback={null}>
@@ -65,11 +69,12 @@ export default function CreatePage() {
           PrintMyMusic
         </Link>
         <div className="flex items-center gap-2">
+          <LanguageToggle />
           <ThemeToggle />
           <SignedOut>
             <SignInButton mode="modal">
               <button className="rounded-lg border border-border px-2.5 py-1.5 text-xs font-medium text-ink transition-colors hover:border-ink/30">
-                Sign in
+                {t('nav.signIn')}
               </button>
             </SignInButton>
           </SignedOut>
@@ -95,11 +100,12 @@ export default function CreatePage() {
             PrintMyMusic
           </Link>
           <div className="flex items-center gap-2">
+            <LanguageToggle />
             <ThemeToggle />
             <SignedOut>
               <SignInButton mode="modal">
                 <button className="rounded-lg border border-border px-2.5 py-1.5 text-xs font-medium text-ink transition-colors hover:border-ink/30">
-                  Sign in
+                  {t('nav.signIn')}
                 </button>
               </SignInButton>
             </SignedOut>

@@ -5,19 +5,21 @@ import { usePosterStore } from '@/lib/store';
 import { Input } from '@/components/ui/input';
 import { DEFAULT_LABELS } from '@/lib/poster';
 import { LabelKey, TemplateId } from '@/types/poster';
+import { useT } from '@/lib/i18n';
 
 // Welche überschreibbaren Beschriftungen in welchem Template sichtbar sind.
-const LABELS_BY_TEMPLATE: Partial<Record<TemplateId, { key: LabelKey; label: string }[]>> = {
+const LABELS_BY_TEMPLATE: Partial<Record<TemplateId, { key: LabelKey; labelKey: string }[]>> = {
   photo: [
-    { key: 'photoAlbumBy', label: '"An album by" prefix' },
-    { key: 'photoReleaseDate', label: 'Release date heading' },
-    { key: 'photoRecordLabel', label: 'Record label heading' },
-    { key: 'photoAlbumLength', label: 'Album length heading' }
+    { key: 'photoAlbumBy', labelKey: 'labels.photoAlbumBy' },
+    { key: 'photoReleaseDate', labelKey: 'labels.photoReleaseDate' },
+    { key: 'photoRecordLabel', labelKey: 'labels.photoRecordLabel' },
+    { key: 'photoAlbumLength', labelKey: 'labels.photoAlbumLength' }
   ],
-  player: [{ key: 'playerCurrentTime', label: 'Playback timestamp' }]
+  player: [{ key: 'playerCurrentTime', labelKey: 'labels.playerCurrentTime' }]
 };
 
 export function LabelControls() {
+  const t = useT();
   const template = usePosterStore((s) => s.template);
   const labels = usePosterStore((s) => s.labels);
   const setLabel = usePosterStore((s) => s.setLabel);
@@ -26,21 +28,16 @@ export function LabelControls() {
   const fields = LABELS_BY_TEMPLATE[template];
 
   if (!fields) {
-    return (
-      <p className="text-xs text-muted">
-        The {template} template has no custom labels. Switch to Photo or Player to
-        edit theirs.
-      </p>
-    );
+    return <p className="text-xs text-muted">{t('labels.none')}</p>;
   }
 
   const isModified = fields.some(({ key }) => labels[key] !== DEFAULT_LABELS[key]);
 
   return (
     <div className="flex flex-col gap-3">
-      {fields.map(({ key, label }) => (
+      {fields.map(({ key, labelKey }) => (
         <label key={key} className="flex flex-col gap-1.5">
-          <span className="text-xs font-medium text-muted">{label}</span>
+          <span className="text-xs font-medium text-muted">{t(labelKey)}</span>
           <Input
             value={labels[key]}
             placeholder={DEFAULT_LABELS[key]}
@@ -56,7 +53,7 @@ export function LabelControls() {
           className="flex items-center gap-1.5 self-start text-xs font-medium text-muted transition-colors hover:text-ink"
         >
           <RotateCcw className="h-3 w-3" />
-          Reset labels to default
+          {t('labels.reset')}
         </button>
       )}
     </div>

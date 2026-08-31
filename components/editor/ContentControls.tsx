@@ -5,8 +5,10 @@ import { Switch } from '@/components/ui/switch';
 import { Slider } from '@/components/ui/slider';
 import { cn } from '@/lib/utils';
 import { ColumnCount } from '@/types/poster';
+import { useT } from '@/lib/i18n';
 
 export function ContentControls() {
+  const t = useT();
   const showYear = usePosterStore((s) => s.showYear);
   const showTrackNumbers = usePosterStore((s) => s.showTrackNumbers);
   const showDurations = usePosterStore((s) => s.showDurations);
@@ -23,12 +25,12 @@ export function ContentControls() {
 
   return (
     <div className="flex flex-col gap-3">
-      <Switch label="Album year" checked={showYear} onChange={setShowYear} />
-      <Switch label="Track numbers" checked={showTrackNumbers} onChange={setShowTrackNumbers} />
-      <Switch label="Track duration" checked={showDurations} onChange={setShowDurations} />
+      <Switch label={t('content.albumYear')} checked={showYear} onChange={setShowYear} />
+      <Switch label={t('content.trackNumbers')} checked={showTrackNumbers} onChange={setShowTrackNumbers} />
+      <Switch label={t('content.trackDuration')} checked={showDurations} onChange={setShowDurations} />
 
       <div className="flex flex-col gap-1.5 pt-1">
-        <span className="text-xs font-medium text-muted">Columns</span>
+        <span className="text-xs font-medium text-muted">{t('content.columns')}</span>
         <div className="flex gap-2">
           {([1, 2, 3] as ColumnCount[]).map((c) => (
             <button
@@ -50,7 +52,7 @@ export function ContentControls() {
 
       <div className="flex flex-col gap-2 pt-1">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-medium text-muted">Cover size</span>
+          <span className="text-xs font-medium text-muted">{t('content.coverSize')}</span>
           <span className="text-xs text-muted">{coverSize.toFixed(1)}x</span>
         </div>
         <Slider value={coverSize} min={0.5} max={1.5} step={0.05} onChange={setCoverSize} />
@@ -58,7 +60,7 @@ export function ContentControls() {
 
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-medium text-muted">Spacing</span>
+          <span className="text-xs font-medium text-muted">{t('content.spacing')}</span>
           <span className="text-xs text-muted">{spacing.toFixed(1)}x</span>
         </div>
         <Slider value={spacing} min={0.5} max={2} step={0.05} onChange={setSpacing} />

@@ -3,8 +3,10 @@
 import type { ReactNode } from 'react';
 import { usePosterStore } from '@/lib/store';
 import { Input } from '@/components/ui/input';
+import { useT } from '@/lib/i18n';
 
 export function PosterDetailsControls() {
+  const t = useT();
   const albumName = usePosterStore((s) => s.poster.albumName);
   const artistName = usePosterStore((s) => s.poster.artistName);
   const releaseYear = usePosterStore((s) => s.poster.releaseYear);
@@ -14,14 +16,14 @@ export function PosterDetailsControls() {
 
   return (
     <div className="flex flex-col gap-3">
-      <Field label="Album name">
+      <Field label={t('details.albumName')}>
         <Input
           value={albumName}
           onChange={(e) => setPosterField('albumName', e.target.value)}
         />
       </Field>
 
-      <Field label="Artist name">
+      <Field label={t('details.artistName')}>
         <Input
           value={artistName}
           onChange={(e) => setPosterField('artistName', e.target.value)}
@@ -29,14 +31,14 @@ export function PosterDetailsControls() {
       </Field>
 
       <div className="grid grid-cols-2 gap-3">
-        <Field label="Release year">
+        <Field label={t('details.releaseYear')}>
           <Input
             value={releaseYear}
             inputMode="numeric"
             onChange={(e) => setPosterField('releaseYear', e.target.value)}
           />
         </Field>
-        <Field label="Release date">
+        <Field label={t('details.releaseDate')}>
           <Input
             type="date"
             value={releaseDate}
@@ -45,18 +47,15 @@ export function PosterDetailsControls() {
         </Field>
       </div>
 
-      <Field label="Record label">
+      <Field label={t('details.recordLabel')}>
         <Input
           value={recordLabel ?? ''}
-          placeholder="e.g. Independent"
+          placeholder={t('details.recordLabelPlaceholder')}
           onChange={(e) => setPosterField('recordLabel', e.target.value)}
         />
       </Field>
 
-      <p className="text-xs text-muted">
-        Release date and record label show on the Photo template. Editing the date
-        keeps the year in sync.
-      </p>
+      <p className="text-xs text-muted">{t('details.hint')}</p>
     </div>
   );
 }

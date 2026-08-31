@@ -7,8 +7,12 @@ import { AlbumSearchResult } from '@/components/spotify/AlbumSearchResult';
 import { debounce } from '@/lib/utils';
 import { usePosterStore } from '@/lib/store';
 import { spotifyAlbumToPosterData } from '@/lib/poster';
+import { useT } from '@/lib/i18n';
 
 export function AlbumSearch() {
+  const t = useT();
+  const tRef = useRef(t);
+  tRef.current = t;
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SpotifyAlbumSearchItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -31,11 +35,11 @@ export function AlbumSearch() {
       const res = await fetch(`/api/spotify/search?q=${encodeURIComponent(searchQuery)}`);
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.message ?? 'Suche fehlgeschlagen.');
+        throw new Error('search_failed');
       }
       setResults(data.albums ?? []);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Suche fehlgeschlagen.');
+    } catch {
+      setError(tRef.current('search.failed'));
       setResults([]);
     } finally {
       setIsLoading(false);
@@ -66,13 +70,13 @@ export function AlbumSearch() {
       const res = await fetch(`/api/spotify/albums/${album.id}`);
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.message ?? 'Album konnte nicht geladen werden.');
+        throw new Error('album_failed');
       }
       setPoster(spotifyAlbumToPosterData(data));
       setQuery('');
       setResults([]);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Album konnte nicht geladen werden.');
+    } catch {
+      setError(t('search.albumFailed'));
     } finally {
       setIsLoadingAlbum(false);
     }
@@ -89,7 +93,7 @@ export function AlbumSearch() {
             setIsOpen(true);
           }}
           onFocus={() => setIsOpen(true)}
-          placeholder="Search for an album, artist or song..."
+          placeholder={t('search.placeholder')}
           className="h-11 w-full rounded-xl border border-border bg-surface pl-10 pr-9 text-sm text-ink placeholder:text-muted outline-none focus:ring-2 focus:ring-ink/10 focus:border-ink/30"
         />
         {(isLoading || isLoadingAlbum) && (
@@ -113,7 +117,7 @@ export function AlbumSearch() {
         <div className="absolute z-40 mt-2 max-h-80 w-full overflow-y-auto rounded-xl border border-border bg-surface p-2 shadow-panel animate-fadeIn">
           {error && <p className="px-2 py-3 text-sm text-red-600">{error}</p>}
           {!error && !isLoading && results.length === 0 && (
-            <p className="px-2 py-3 text-sm text-muted">Keine Ergebnisse gefunden.</p>
+            <p className="px-2 py-3 text-sm text-muted">{t('search.noResults')}</p>
           )}
           {!error &&
             results.map((album) => (

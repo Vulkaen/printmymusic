@@ -25,20 +25,23 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <ClerkProvider>
-      <html lang="de">
+      <html lang="en">
         <head>
-          {/* Verhindert kurzes Aufblitzen des falschen Farbmodus beim Laden:
-              wendet die gespeicherte Theme-Einstellung an, bevor React
+          {/* Verhindert kurzes Aufblitzen der falschen Farb-/Sprach-
+              einstellung: wendet die gespeicherten Werte an, bevor React
               hydratisiert. */}
           <script
             dangerouslySetInnerHTML={{
               __html: `
                 try {
-                  var stored = localStorage.getItem('printmymusic-theme');
-                  var theme = stored ? JSON.parse(stored).state.theme : 'light';
-                  if (theme === 'dark') {
-                    document.documentElement.classList.add('dark');
-                  }
+                  var t = localStorage.getItem('printmymusic-theme');
+                  var theme = t ? JSON.parse(t).state.theme : 'light';
+                  if (theme === 'dark') document.documentElement.classList.add('dark');
+                } catch (e) {}
+                try {
+                  var l = localStorage.getItem('printmymusic-locale');
+                  var loc = l ? JSON.parse(l).state.locale : 'en';
+                  if (loc) document.documentElement.lang = loc;
                 } catch (e) {}
               `
             }}

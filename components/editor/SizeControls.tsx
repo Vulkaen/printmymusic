@@ -7,8 +7,10 @@ import { POSTER_SIZES } from '@/lib/dimensions';
 import { Orientation, PosterSizeId } from '@/types/poster';
 import { cn } from '@/lib/utils';
 import { RectangleVertical, RectangleHorizontal } from 'lucide-react';
+import { useT } from '@/lib/i18n';
 
 export function SizeControls() {
+  const t = useT();
   const posterSizeId = usePosterStore((s) => s.posterSizeId);
   const customWidthMm = usePosterStore((s) => s.customWidthMm);
   const customHeightMm = usePosterStore((s) => s.customHeightMm);
@@ -21,7 +23,7 @@ export function SizeControls() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1.5">
-        <span className="text-xs font-medium text-muted">Poster size</span>
+        <span className="text-xs font-medium text-muted">{t('size.posterSize')}</span>
         <Select
           value={posterSizeId}
           onChange={(v) => setPosterSizeId(v as PosterSizeId)}
@@ -32,7 +34,7 @@ export function SizeControls() {
       {posterSizeId === 'custom' && (
         <div className="grid grid-cols-2 gap-2">
           <div className="flex flex-col gap-1.5">
-            <span className="text-xs font-medium text-muted">Width (mm)</span>
+            <span className="text-xs font-medium text-muted">{t('size.widthMm')}</span>
             <Input
               type="number"
               value={customWidthMm}
@@ -42,7 +44,7 @@ export function SizeControls() {
             />
           </div>
           <div className="flex flex-col gap-1.5">
-            <span className="text-xs font-medium text-muted">Height (mm)</span>
+            <span className="text-xs font-medium text-muted">{t('size.heightMm')}</span>
             <Input
               type="number"
               value={customHeightMm}
@@ -55,7 +57,7 @@ export function SizeControls() {
       )}
 
       <div className="flex flex-col gap-1.5">
-        <span className="text-xs font-medium text-muted">Orientation</span>
+        <span className="text-xs font-medium text-muted">{t('size.orientation')}</span>
         <div className="flex gap-2">
           {(['portrait', 'landscape'] as Orientation[]).map((o) => (
             <button
@@ -63,7 +65,7 @@ export function SizeControls() {
               type="button"
               onClick={() => setOrientation(o)}
               className={cn(
-                'flex flex-1 items-center justify-center gap-2 rounded-lg border py-2 text-sm capitalize transition-colors',
+                'flex flex-1 items-center justify-center gap-2 rounded-lg border py-2 text-sm transition-colors',
                 orientation === o
                   ? 'border-primary bg-primary text-primary-foreground'
                   : 'border-border bg-surface text-ink hover:border-ink/30'
@@ -74,7 +76,7 @@ export function SizeControls() {
               ) : (
                 <RectangleHorizontal className="h-4 w-4" />
               )}
-              {o}
+              {t(o === 'portrait' ? 'size.portrait' : 'size.landscape')}
             </button>
           ))}
         </div>

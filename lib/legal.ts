@@ -2,23 +2,24 @@
 // vor dem Live-Gang durch echte Daten ersetzt werden. Impressum,
 // Datenschutzerklärung und der Footer ziehen ihre Angaben von hier.
 
+// PLATZHALTER (Mustermann) – vor dem Live-Gang durch echte Daten ersetzen.
 export const OPERATOR = {
   /** Voller bürgerlicher Name. */
-  name: '«Vorname Nachname»',
+  name: 'Max Mustermann',
   /** Ladungsfähige Anschrift – kein Postfach. */
-  street: '«Straße Hausnummer»',
-  zipCity: '«PLZ Ort»',
+  street: 'Musterstraße 1',
+  zipCity: '12345 Musterstadt',
   country: 'Deutschland',
   /** Kontakt-E-Mail, die auf der Domain liegt. */
-  email: '«kontakt@deine-domain.de»',
+  email: 'kontakt@printmymusic.de',
   /** Telefonnummer für schnellen Kontakt (empfohlen, rechtlich sicherer). */
-  phone: '«+49 000 0000000»',
+  phone: '+49 30 1234567',
   /** Finale Domain ohne https:// */
-  domain: '«deine-domain.de»',
+  domain: 'printmymusic.de',
   /** Bundesland des Wohnsitzes – bestimmt die zuständige Datenschutz-Aufsichtsbehörde. */
-  state: '«Bundesland»',
+  state: 'Berlin',
   /** Datum der letzten Aktualisierung dieser Dokumente. */
-  lastUpdated: '«TT.MM.JJJJ»'
+  lastUpdated: '31.08.2026'
 } as const;
 
 export const SITE_NAME = 'PrintMyMusic';

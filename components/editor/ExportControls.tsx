@@ -10,6 +10,7 @@ import { exportPoster } from '@/lib/export';
 import { ExportFormat, ExportQuality } from '@/types/poster';
 import { cn } from '@/lib/utils';
 import { useCredits } from '@/lib/useCredits';
+import { useT } from '@/lib/i18n';
 
 const FORMAT_OPTIONS: { value: ExportFormat; label: string }[] = [
   { value: 'png', label: 'PNG' },
@@ -17,18 +18,18 @@ const FORMAT_OPTIONS: { value: ExportFormat; label: string }[] = [
   { value: 'pdf', label: 'PDF' }
 ];
 
-const QUALITY_OPTIONS: { value: ExportQuality; label: string; hint: string }[] = [
-  { value: 'web', label: 'Web', hint: '72 DPI' },
-  { value: 'print150', label: 'Print', hint: '150 DPI' },
-  { value: 'print300', label: 'Print HQ', hint: '300 DPI' }
+const QUALITY_OPTIONS: { value: ExportQuality; labelKey: string; hint: string }[] = [
+  { value: 'web', labelKey: 'export.qWeb', hint: '72 DPI' },
+  { value: 'print150', labelKey: 'export.qPrint', hint: '150 DPI' },
+  { value: 'print300', labelKey: 'export.qPrintHq', hint: '300 DPI' }
 ];
 
 export function ExportControls() {
+  const t = useT();
   const state = usePosterStore();
   const isCustomCover = usePosterStore((s) => s.isCustomCover);
   const [format, setFormat] = useState<ExportFormat>('png');
   const [isExporting, setIsExporting] = useState(false);
-  const [status, setStatus] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { credits, isSignedIn, refresh } = useCredits();
   const cost = isCustomCover ? 2 : 1;
@@ -45,15 +46,14 @@ export function ExportControls() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ cost })
       });
-      const consumeData = await consumeRes.json();
 
       if (!consumeRes.ok) {
         if (consumeRes.status === 402) {
-          setError('Dein Tageskontingent ist aufgebraucht. In 24 Stunden gibt es wieder frische Credits.');
+          setError(t('export.errInsufficient'));
         } else if (consumeRes.status === 401) {
-          setError('Bitte einloggen, um zu exportieren.');
+          setError(t('export.errSignIn'));
         } else {
-          setError(consumeData.message ?? 'Export fehlgeschlagen.');
+          setError(t('export.errGeneric'));
         }
         return;
       }
@@ -63,20 +63,22 @@ export function ExportControls() {
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/(^-|-$)/g, '') || 'poster';
 
-      await exportPoster(state, { format, fileName }, setStatus);
+      await exportPoster(state, { format, fileName });
       refresh();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Export fehlgeschlagen.');
+    } catch {
+      setError(t('export.errGeneric'));
     } finally {
       setIsExporting(false);
-      setStatus(null);
     }
   }
+
+  const creditWord = cost === 1 ? t('credits.one') : t('credits.other');
+  const remainingWord = credits === 1 ? t('credits.one') : t('credits.other');
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1.5">
-        <span className="text-xs font-medium text-muted">Format</span>
+        <span className="text-xs font-medium text-muted">{t('export.format')}</span>
         <Select
           value={format}
           onChange={(v) => setFormat(v as ExportFormat)}
@@ -85,7 +87,7 @@ export function ExportControls() {
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <span className="text-xs font-medium text-muted">Quality</span>
+        <span className="text-xs font-medium text-muted">{t('export.quality')}</span>
         <div className="grid grid-cols-3 gap-2">
           {QUALITY_OPTIONS.map((q) => (
             <button
@@ -99,7 +101,7 @@ export function ExportControls() {
                   : 'border-border bg-surface text-ink hover:border-ink/30'
               )}
             >
-              {q.label}
+              {t(q.labelKey)}
               <span className={cn('text-[10px]', state.dpi === q.value ? 'text-primary-foreground/70' : 'text-muted')}>
                 {q.hint}
               </span>
@@ -111,7 +113,7 @@ export function ExportControls() {
       {isSignedIn && credits !== null && (
         <div className="flex items-center gap-1.5 text-xs text-muted">
           <Coins className="h-3.5 w-3.5" />
-          {credits} {credits === 1 ? 'credit' : 'credits'} left today · refills every 24 h
+          {credits} {remainingWord} {t('credits.suffix')}
         </div>
       )}
 
@@ -122,12 +124,12 @@ export function ExportControls() {
           {isExporting ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin" />
-              {status ?? 'Generating print file...'}
+              {t('export.generating')}
             </>
           ) : (
             <>
               <Download className="h-4 w-4" />
-              Export poster ({cost} credit{cost > 1 ? 's' : ''})
+              {t('export.button')} ({cost} {creditWord})
             </>
           )}
         </Button>
@@ -135,7 +137,7 @@ export function ExportControls() {
         <SignInButton mode="modal">
           <Button size="lg" className="w-full">
             <Download className="h-4 w-4" />
-            Sign in to export
+            {t('export.signInToExport')}
           </Button>
         </SignInButton>
       )}

@@ -3,6 +3,7 @@
 import { usePosterStore } from '@/lib/store';
 import { TemplateId } from '@/types/poster';
 import { cn } from '@/lib/utils';
+import { useT } from '@/lib/i18n';
 
 const TEMPLATES: { id: TemplateId; label: string }[] = [
   { id: 'minimal', label: 'Minimal' },
@@ -18,6 +19,7 @@ const COLOR_PRESETS = {
 } as const;
 
 export function TemplateSelector() {
+  const t = useT();
   const template = usePosterStore((s) => s.template);
   const setTemplate = usePosterStore((s) => s.setTemplate);
   const setBackgroundColor = usePosterStore((s) => s.setBackgroundColor);
@@ -58,10 +60,8 @@ export function TemplateSelector() {
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <span className="text-xs font-medium text-muted">Color mode</span>
-        <p className="text-xs text-muted/80">
-          Applies to whichever layout is selected above.
-        </p>
+        <span className="text-xs font-medium text-muted">{t('template.colorMode')}</span>
+        <p className="text-xs text-muted/80">{t('template.colorModeHint')}</p>
         <div className="mt-1 grid grid-cols-2 gap-2">
           <button
             type="button"
@@ -69,7 +69,7 @@ export function TemplateSelector() {
             className="flex items-center justify-center gap-2 rounded-lg border border-border bg-surface px-3 py-2 text-xs font-medium text-ink transition-colors hover:border-ink/30"
           >
             <span className="h-3.5 w-3.5 rounded-full border border-black/10 bg-[#FAFAF9]" />
-            White
+            {t('template.white')}
           </button>
           <button
             type="button"
@@ -77,7 +77,7 @@ export function TemplateSelector() {
             className="flex items-center justify-center gap-2 rounded-lg border border-border bg-surface px-3 py-2 text-xs font-medium text-ink transition-colors hover:border-ink/30"
           >
             <span className="h-3.5 w-3.5 rounded-full border border-black/10 bg-[#0B0B0C]" />
-            Dark
+            {t('template.dark')}
           </button>
         </div>
       </div>

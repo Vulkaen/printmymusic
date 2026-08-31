@@ -15,60 +15,65 @@ import { TrackNameEditor } from '@/components/editor/TrackNameEditor';
 import { AccordionRoot, AccordionSection } from '@/components/ui/accordion';
 import Link from 'next/link';
 import { LEGAL_LINKS } from '@/lib/legal';
+import { useT } from '@/lib/i18n';
 
 export function PosterEditor() {
+  const t = useT();
+
   return (
     <div className="flex h-full flex-col">
       <div className="border-b border-border px-5 py-5">
-        <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted">Music</h2>
+        <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted">
+          {t('section.music')}
+        </h2>
         <AlbumSearch />
       </div>
 
       <div className="flex-1 overflow-y-auto px-5">
         <AccordionRoot defaultValue={['layout', 'colors']}>
-          <AccordionSection value="layout" title="Layout" icon={<LayoutGrid className="h-4 w-4" />}>
+          <AccordionSection value="layout" title={t('section.layout')} icon={<LayoutGrid className="h-4 w-4" />}>
             <TemplateSelector />
           </AccordionSection>
 
-          <AccordionSection value="colors" title="Colors" icon={<Palette className="h-4 w-4" />}>
+          <AccordionSection value="colors" title={t('section.colors')} icon={<Palette className="h-4 w-4" />}>
             <ColorControls />
           </AccordionSection>
 
-          <AccordionSection value="typography" title="Typography" icon={<Type className="h-4 w-4" />}>
+          <AccordionSection value="typography" title={t('section.typography')} icon={<Type className="h-4 w-4" />}>
             <TypographyControls />
           </AccordionSection>
 
-          <AccordionSection value="content" title="Content" icon={<ListChecks className="h-4 w-4" />}>
+          <AccordionSection value="content" title={t('section.content')} icon={<ListChecks className="h-4 w-4" />}>
             <ContentControls />
           </AccordionSection>
 
-          <AccordionSection value="size" title="Size" icon={<Ruler className="h-4 w-4" />}>
+          <AccordionSection value="size" title={t('section.size')} icon={<Ruler className="h-4 w-4" />}>
             <SizeControls />
           </AccordionSection>
 
-          <AccordionSection value="personalize" title="Personalize" icon={<Sparkles className="h-4 w-4" />}>
+          <AccordionSection value="personalize" title={t('section.personalize')} icon={<Sparkles className="h-4 w-4" />}>
             <div className="flex flex-col gap-5">
               <div>
                 <h4 className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-muted">
-                  Details
+                  {t('personalize.details')}
                 </h4>
                 <PosterDetailsControls />
               </div>
               <div>
                 <h4 className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-muted">
-                  Template labels
+                  {t('personalize.templateLabels')}
                 </h4>
                 <LabelControls />
               </div>
               <div>
                 <h4 className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-muted">
-                  Cover
+                  {t('personalize.cover')}
                 </h4>
                 <CustomCoverUpload />
               </div>
               <div>
                 <h4 className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-muted">
-                  Tracks
+                  {t('personalize.tracks')}
                 </h4>
                 <TrackNameEditor />
               </div>
@@ -80,7 +85,7 @@ export function PosterEditor() {
       <div className="border-t border-border px-5 py-5">
         <h2 className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted">
           <Download className="h-3.5 w-3.5" />
-          Export
+          {t('section.export')}
         </h2>
         <ExportControls />
         <nav className="mt-4 flex flex-wrap justify-center gap-x-3 gap-y-1 text-[11px] text-muted">

@@ -5,6 +5,7 @@ import { usePosterStore } from '@/lib/store';
 import { PosterRenderer } from '@/components/poster/PosterRenderer';
 import { DEFAULT_LABELS } from '@/lib/poster';
 import { resolveDimensionsMm, getPosterSize } from '@/lib/dimensions';
+import { useT } from '@/lib/i18n';
 
 // Feste Design-Referenzbreite in px, auf die alle Templates ihre relativen
 // Größen (baseWidth * factor) beziehen. Export nutzt denselben Wert für
@@ -14,6 +15,7 @@ export const DESIGN_WIDTH = 1000;
 export const PosterPreview = forwardRef<HTMLDivElement>(function PosterPreview(_props, ref) {
   const scaleContainerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
+  const t = useT();
 
   const state = usePosterStore();
   const { widthMm, heightMm } = resolveDimensionsMm(
@@ -52,7 +54,8 @@ export const PosterPreview = forwardRef<HTMLDivElement>(function PosterPreview(_
     state.posterSizeId === 'custom' ? 'Custom' : getPosterSize(state.posterSizeId).label;
   const widthLabel = Math.round(widthMm);
   const heightLabel = Math.round(heightMm);
-  const orientationLabel = state.orientation === 'portrait' ? 'Portrait' : 'Landscape';
+  const orientationLabel =
+    state.orientation === 'portrait' ? t('preview.portrait') : t('preview.landscape');
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-3">

@@ -7,8 +7,10 @@ import { ColorPicker } from '@/components/ui/color-picker';
 import { extractDominantColors, isLightColor } from '@/lib/colors';
 import { proxiedImageUrl } from '@/lib/poster';
 import { Button } from '@/components/ui/button';
+import { useT } from '@/lib/i18n';
 
 export function ColorControls() {
+  const t = useT();
   const backgroundColor = usePosterStore((s) => s.backgroundColor);
   const textColor = usePosterStore((s) => s.textColor);
   const accentColor = usePosterStore((s) => s.accentColor);
@@ -32,8 +34,8 @@ export function ColorControls() {
       const proxied = proxiedImageUrl(coverImage);
       const colors = await extractDominantColors(proxied ?? coverImage, 4);
       setAlbumColors(colors);
-    } catch (err) {
-      setError('Farben konnten nicht extrahiert werden.');
+    } catch {
+      setError(t('colors.extractFailed'));
     } finally {
       setIsExtracting(false);
     }
@@ -50,12 +52,12 @@ export function ColorControls() {
 
   return (
     <div className="flex flex-col gap-1">
-      <ColorPicker label="Background" value={backgroundColor} onChange={setBackgroundColor} />
-      <ColorPicker label="Text" value={textColor} onChange={setTextColor} />
-      <ColorPicker label="Accent" value={accentColor} onChange={setAccentColor} />
+      <ColorPicker label={t('colors.background')} value={backgroundColor} onChange={setBackgroundColor} />
+      <ColorPicker label={t('colors.text')} value={textColor} onChange={setTextColor} />
+      <ColorPicker label={t('colors.accent')} value={accentColor} onChange={setAccentColor} />
 
       <div className="mt-2 flex items-center justify-between">
-        <span className="text-sm text-ink">Use colors from album cover</span>
+        <span className="text-sm text-ink">{t('colors.useAlbum')}</span>
         <Button
           type="button"
           variant="outline"
@@ -64,7 +66,7 @@ export function ColorControls() {
           disabled={!coverImage || isExtracting}
         >
           {isExtracting ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Wand2 className="h-3.5 w-3.5" />}
-          Extract
+          {t('colors.extract')}
         </Button>
       </div>
 

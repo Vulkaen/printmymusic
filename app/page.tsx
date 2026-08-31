@@ -1,11 +1,15 @@
+'use client';
+
 import Link from 'next/link';
 import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import { PosterRenderer } from '@/components/poster/PosterRenderer';
 import { demoPosterData, DEFAULT_LABELS } from '@/lib/poster';
 import { TemplateId } from '@/types/poster';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { LanguageToggle } from '@/components/ui/language-toggle';
 import { HeaderCredits } from '@/components/ui/header-credits';
 import { SiteFooter } from '@/components/ui/site-footer';
+import { useT } from '@/lib/i18n';
 
 // Feste Marken-Töne für die Hero-Sektion, bewusst unabhängig vom Hell-/Dunkel-
 // Umschalter der App (die Hero-Farbwelt bleibt konstant als Wiedererkennung).
@@ -58,6 +62,7 @@ function baseTemplateStyle(item: { bg: string; text: string; accent: string }) {
 
 export default function LandingPage() {
   const demo = demoPosterData();
+  const t = useT();
 
   return (
     <main className="min-h-screen bg-canvas">
@@ -74,11 +79,12 @@ export default function LandingPage() {
             PrintMyMusic
           </div>
           <div className="flex items-center gap-3">
+            <LanguageToggle variant="dark" />
             <ThemeToggle />
             <SignedOut>
               <SignInButton mode="modal">
                 <button className="rounded-lg border border-[#3A3833] px-3 py-2 text-sm font-medium text-[#F5F4F2] transition-colors hover:border-[#F5F4F2]/50">
-                  Sign in
+                  {t('nav.signIn')}
                 </button>
               </SignInButton>
             </SignedOut>
@@ -92,20 +98,17 @@ export default function LandingPage() {
         <section className="mx-auto grid max-w-6xl gap-12 px-6 pb-20 pt-8 md:grid-cols-2 md:items-center md:gap-8 md:pb-28 md:pt-12">
           <div>
             <h1 className="font-grotesk text-5xl font-bold leading-[1.05] tracking-tight text-[#F5F4F2] sm:text-6xl">
-              Your favorite album,
+              {t('landing.heroTitle1')}
               <br />
-              printed on your wall.
+              {t('landing.heroTitle2')}
             </h1>
-            <p className="mt-6 max-w-md text-lg text-[#C9C6BC]">
-              Search any album, pick a layout, and export a print-ready poster in
-              minutes. No design skills required.
-            </p>
+            <p className="mt-6 max-w-md text-lg text-[#C9C6BC]">{t('landing.heroSub')}</p>
             <Link
               href="/create"
               className="mt-8 inline-flex items-center rounded-lg px-6 py-3.5 text-sm font-semibold text-[#14120F] shadow-lg transition-transform hover:scale-[1.02] active:scale-[0.98]"
               style={{ backgroundColor: GOLD }}
             >
-              Start designing
+              {t('landing.ctaStart')}
             </Link>
           </div>
 
@@ -135,11 +138,8 @@ export default function LandingPage() {
           gestreute Poster-Ausschnitte wie auf einer Pinnwand. */}
       <section className="bg-canvas px-6 py-20">
         <div className="mx-auto max-w-6xl">
-          <h2 className="font-grotesk text-3xl font-bold text-ink">Five layouts, light or dark</h2>
-          <p className="mt-2 max-w-md text-muted">
-            Every layout pulls from the same album data and switches between a white or dark color
-            mode — pick whichever fits your wall.
-          </p>
+          <h2 className="font-grotesk text-3xl font-bold text-ink">{t('landing.showcaseTitle')}</h2>
+          <p className="mt-2 max-w-md text-muted">{t('landing.showcaseSub')}</p>
 
           <div className="mt-14 flex flex-wrap justify-center gap-x-10 gap-y-14">
             {SHOWCASE.map((item) => (

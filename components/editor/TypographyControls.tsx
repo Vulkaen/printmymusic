@@ -7,6 +7,7 @@ import { FONT_OPTIONS } from '@/lib/fonts';
 import { FontId, TextAlign } from '@/types/poster';
 import { cn } from '@/lib/utils';
 import { AlignLeft, AlignCenter, AlignRight } from 'lucide-react';
+import { useT } from '@/lib/i18n';
 
 const ALIGN_OPTIONS: { value: TextAlign; icon: typeof AlignLeft }[] = [
   { value: 'left', icon: AlignLeft },
@@ -15,6 +16,7 @@ const ALIGN_OPTIONS: { value: TextAlign; icon: typeof AlignLeft }[] = [
 ];
 
 export function TypographyControls() {
+  const t = useT();
   const fontFamily = usePosterStore((s) => s.fontFamily);
   const titleSize = usePosterStore((s) => s.titleSize);
   const artistSize = usePosterStore((s) => s.artistSize);
@@ -30,7 +32,7 @@ export function TypographyControls() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1.5">
-        <span className="text-xs font-medium text-muted">Font</span>
+        <span className="text-xs font-medium text-muted">{t('type.font')}</span>
         <Select
           value={fontFamily}
           onChange={(v) => setFontFamily(v as FontId)}
@@ -38,12 +40,12 @@ export function TypographyControls() {
         />
       </div>
 
-      <SliderRow label="Album title size" value={titleSize} min={0.6} max={1.8} onChange={setTitleSize} />
-      <SliderRow label="Artist size" value={artistSize} min={0.6} max={1.8} onChange={setArtistSize} />
-      <SliderRow label="Track size" value={trackSize} min={0.6} max={1.8} onChange={setTrackSize} />
+      <SliderRow label={t('type.titleSize')} value={titleSize} min={0.6} max={1.8} onChange={setTitleSize} />
+      <SliderRow label={t('type.artistSize')} value={artistSize} min={0.6} max={1.8} onChange={setArtistSize} />
+      <SliderRow label={t('type.trackSize')} value={trackSize} min={0.6} max={1.8} onChange={setTrackSize} />
 
       <div className="flex flex-col gap-1.5">
-        <span className="text-xs font-medium text-muted">Alignment</span>
+        <span className="text-xs font-medium text-muted">{t('type.alignment')}</span>
         <div className="flex gap-2">
           {ALIGN_OPTIONS.map(({ value, icon: Icon }) => (
             <button
