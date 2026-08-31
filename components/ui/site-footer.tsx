@@ -1,0 +1,20 @@
+import Link from 'next/link';
+import { LEGAL_LINKS, SITE_NAME } from '@/lib/legal';
+
+export function SiteFooter() {
+  return (
+    <footer className="border-t border-border px-6 py-8 text-center text-xs text-muted">
+      <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+        {LEGAL_LINKS.map((link) => (
+          <Link key={link.href} href={link.href} className="transition-colors hover:text-ink">
+            {link.label}
+          </Link>
+        ))}
+      </nav>
+      <p className="mx-auto mt-5 max-w-2xl leading-relaxed">
+        {SITE_NAME} is an independent product and is not affiliated with or endorsed by Deezer or
+        Spotify. Album artwork and metadata belong to their respective owners.
+      </p>
+    </footer>
+  );
+}

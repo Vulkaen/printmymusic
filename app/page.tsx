@@ -5,6 +5,7 @@ import { demoPosterData, DEFAULT_LABELS } from '@/lib/poster';
 import { TemplateId } from '@/types/poster';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { HeaderCredits } from '@/components/ui/header-credits';
+import { SiteFooter } from '@/components/ui/site-footer';
 
 // Feste Marken-Töne für die Hero-Sektion, bewusst unabhängig vom Hell-/Dunkel-
 // Umschalter der App (die Hero-Farbwelt bleibt konstant als Wiedererkennung).
@@ -162,10 +163,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <footer className="border-t border-border px-6 py-4 text-center text-xs text-muted">
-        PrintMyMusic is an independent product and is not affiliated with or endorsed by Deezer or
-        Spotify. Made by Vulkaen.
-      </footer>
+      <SiteFooter />
     </main>
   );
 }

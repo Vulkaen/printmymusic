@@ -24,11 +24,25 @@ export async function POST(request: NextRequest) {
   }
 
   let packId: string;
+  let consent = false;
   try {
     const body = await request.json();
     packId = body.packId;
+    consent = body.consent === true;
   } catch {
     return NextResponse.json({ error: 'invalid_request', message: 'Kein Paket ausgewählt.' }, { status: 400 });
+  }
+
+  // Fernabsatz: ohne ausdrückliche Zustimmung zur sofortigen Ausführung
+  // (und damit zum Erlöschen des Widerrufsrechts) darf kein Kauf starten.
+  if (!consent) {
+    return NextResponse.json(
+      {
+        error: 'consent_required',
+        message: 'Zustimmung zur sofortigen Ausführung erforderlich.'
+      },
+      { status: 400 }
+    );
   }
 
   const pack = CREDIT_PACKS.find((p) => p.id === packId);
@@ -51,7 +65,13 @@ export async function POST(request: NextRequest) {
       client_reference_id: userId,
       // Wird im Webhook wieder ausgelesen - von Stripe signiert übermittelt,
       // kann vom Kunden nicht manipuliert werden.
-      metadata: { userId, credits: String(pack.credits) }
+      metadata: {
+        userId,
+        credits: String(pack.credits),
+        // Nachweis der Widerrufs-Zustimmung (Fernabsatz).
+        withdrawalConsent: 'true',
+        consentAt: new Date().toISOString()
+      }
     });
 
     return NextResponse.json({ url: session.url });

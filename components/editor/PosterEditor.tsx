@@ -13,6 +13,8 @@ import { PosterDetailsControls } from '@/components/editor/PosterDetailsControls
 import { LabelControls } from '@/components/editor/LabelControls';
 import { TrackNameEditor } from '@/components/editor/TrackNameEditor';
 import { AccordionRoot, AccordionSection } from '@/components/ui/accordion';
+import Link from 'next/link';
+import { LEGAL_LINKS } from '@/lib/legal';
 
 export function PosterEditor() {
   return (
@@ -81,6 +83,13 @@ export function PosterEditor() {
           Export
         </h2>
         <ExportControls />
+        <nav className="mt-4 flex flex-wrap justify-center gap-x-3 gap-y-1 text-[11px] text-muted">
+          {LEGAL_LINKS.map((link) => (
+            <Link key={link.href} href={link.href} className="transition-colors hover:text-ink">
+              {link.label}
+            </Link>
+          ))}
+        </nav>
       </div>
     </div>
   );
