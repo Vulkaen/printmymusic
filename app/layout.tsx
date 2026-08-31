@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { ClerkProvider } from '@clerk/nextjs';
-import { Analytics } from '@vercel/analytics/react';
+import { Analytics } from '@vercel/analytics/next';
 import { Inter, Playfair_Display, DM_Sans, Space_Grotesk } from 'next/font/google';
 import './globals.css';
 
