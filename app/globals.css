@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 :root {
+  color-scheme: light;
   --color-canvas: #fafaf9;
   --color-ink: #111110;
   --color-border: #e7e5e2;
@@ -13,6 +14,7 @@
 }
 
 .dark {
+  color-scheme: dark;
   --color-canvas: #121212;
   --color-ink: #f5f4f2;
   --color-border: #2a2a28;
