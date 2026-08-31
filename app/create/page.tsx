@@ -80,7 +80,7 @@ export default function CreatePage() {
       </header>
 
       {/* Mobile: Preview oben */}
-      <div className="flex h-[46vh] items-center justify-center border-b border-border bg-surface p-4 md:hidden">
+      <div className="preview-stage flex h-[46vh] items-center justify-center border-b border-border p-4 md:hidden">
         <PosterPreview />
       </div>
 
@@ -114,7 +114,7 @@ export default function CreatePage() {
       </aside>
 
       {/* Desktop: große Live-Vorschau rechts */}
-      <main className="order-1 hidden flex-1 items-center justify-center p-10 md:order-2 md:flex">
+      <main className="preview-stage order-1 hidden flex-1 items-center justify-center p-10 md:order-2 md:flex lg:p-14">
         <PosterPreview />
       </main>
     </div>

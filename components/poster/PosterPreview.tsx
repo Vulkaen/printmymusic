@@ -68,7 +68,7 @@ export const PosterPreview = forwardRef<HTMLDivElement>(function PosterPreview(_
         >
           <div
             ref={ref}
-            className="origin-top-left overflow-hidden shadow-panel"
+            className="origin-top-left overflow-hidden shadow-stage ring-1 ring-black/[0.06] dark:ring-white/[0.08]"
             style={{
               width: DESIGN_WIDTH,
               height: designHeight,
@@ -100,7 +100,7 @@ export const PosterPreview = forwardRef<HTMLDivElement>(function PosterPreview(_
           </div>
         </div>
       </div>
-      <span className="shrink-0 text-xs font-medium text-muted">
+      <span className="shrink-0 rounded-full border border-border bg-surface/70 px-3 py-1 text-xs font-medium text-muted shadow-subtle backdrop-blur">
         {sizeLabel} · {widthLabel} × {heightLabel} mm · {orientationLabel}
       </span>
     </div>
