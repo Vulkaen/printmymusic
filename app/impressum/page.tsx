@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { LegalPage } from '@/components/legal/LegalPage';
-import { OPERATOR, TAX } from '@/lib/legal';
+import { OPERATOR } from '@/lib/legal';
 
 export const metadata: Metadata = {
   title: 'Impressum — PrintMyMusic',
@@ -28,19 +28,11 @@ export default function ImpressumPage() {
         Telefon: {OPERATOR.phone}
       </p>
 
-      <h2>Umsatzsteuer</h2>
-      {TAX.kleinunternehmer ? (
-        <p>
-          Als Kleinunternehmer im Sinne von § 19 Abs. 1 UStG wird keine Umsatzsteuer berechnet und
-          folglich auch nicht ausgewiesen.
-        </p>
-      ) : (
-        <p>
-          Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz:
-          <br />
-          {TAX.vatId || '«USt-IdNr. eintragen»'}
-        </p>
-      )}
+      <h2>Art des Angebots</h2>
+      <p>
+        PrintMyMusic ist ein privates, nicht-kommerzielles Projekt. Die Nutzung ist kostenlos; es
+        werden keine Waren oder Dienstleistungen verkauft.
+      </p>
 
       <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
       <p>
@@ -49,12 +41,6 @@ export default function ImpressumPage() {
         {OPERATOR.street}
         <br />
         {OPERATOR.zipCity}
-      </p>
-
-      <h2>Verbraucherstreitbeilegung / Universalschlichtungsstelle</h2>
-      <p>
-        Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer
-        Verbraucherschlichtungsstelle teilzunehmen.
       </p>
 
       <h2>Haftung für Inhalte</h2>
@@ -74,11 +60,8 @@ export default function ImpressumPage() {
         Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen
         Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen.
         Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der
-        Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche
-        Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht
-        erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne
-        konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von
-        Rechtsverletzungen werden wir derartige Links umgehend entfernen.
+        Seiten verantwortlich. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links
+        umgehend entfernen.
       </p>
 
       <h2>Urheberrecht</h2>
@@ -91,7 +74,8 @@ export default function ImpressumPage() {
       <p>
         Albumcover, Bandfotos, Songtitel und weitere Metadaten werden über die öffentliche Deezer-API
         bezogen und bleiben Eigentum der jeweiligen Rechteinhaber. PrintMyMusic ist ein
-        eigenständiges Produkt und steht in keiner Verbindung zu Deezer oder Spotify.
+        eigenständiges Produkt und steht in keiner Verbindung zu Deezer oder Spotify. Die im Editor
+        erstellten Poster sind für den privaten Gebrauch bestimmt.
       </p>
     </LegalPage>
   );

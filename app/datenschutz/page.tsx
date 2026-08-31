@@ -58,7 +58,17 @@ export default function DatenschutzPage() {
         Region Frankfurt (EU) angesiedelt.
       </p>
 
-      <h2>4. Registrierung und Anmeldung (Clerk)</h2>
+      <h2>4. Reichweitenmessung (Vercel Web Analytics)</h2>
+      <p>
+        Zur Ermittlung der Besucherzahlen setzen wir Vercel Web Analytics ein. Der Dienst arbeitet
+        ohne Cookies und ohne geräteübergreifende Wiedererkennung. Aus Angaben des Aufrufs (u. a.
+        aufgerufene Seite, Referrer, ungefähre Herkunft anhand der IP-Adresse, Gerätetyp) wird ein
+        anonymer Hash-Wert gebildet, der nach 24 Stunden nicht mehr rekonstruierbar ist. Es werden
+        keine für uns personenbeziehbaren Daten gespeichert. Rechtsgrundlage ist unser berechtigtes
+        Interesse an einer datensparsamen Reichweitenmessung (Art. 6 Abs. 1 lit. f DSGVO).
+      </p>
+
+      <h2>5. Registrierung und Anmeldung (Clerk)</h2>
       <p>
         Für die Anmeldung nutzen wir den Dienst Clerk der Clerk, Inc., 660 King Street, Unit 345,
         San Francisco, CA 94107, USA. Bei der Registrierung werden je nach gewählter Methode
@@ -76,23 +86,14 @@ export default function DatenschutzPage() {
         Datenschutzbestimmungen von Google.
       </p>
 
-      <h2>5. Zahlungsabwicklung (Stripe)</h2>
-      <p>
-        Der Kauf von Credits wird über die Stripe Payments Europe Ltd., 1 Grand Canal Street Lower,
-        Grand Canal Dock, Dublin, Irland (für Nutzer im EWR) bzw. die Stripe, Inc., USA, abgewickelt.
-        Die Eingabe der Zahlungsdaten (z. B. Kreditkarte) erfolgt ausschließlich auf einer von Stripe
-        gehosteten Seite; wir erhalten diese Daten nicht. Von Stripe erhalten wir eine
-        Zahlungsbestätigung sowie eine Transaktions- und Kundenkennung. Rechtsgrundlage ist die
-        Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO) sowie unser berechtigtes Interesse an
-        Betrugsprävention (Art. 6 Abs. 1 lit. f DSGVO). Es gilt zusätzlich die Datenschutzerklärung
-        von Stripe.
-      </p>
-
       <h2>6. Guthaben (Credits)</h2>
       <p>
-        In unserer Datenbank speichern wir Ihre Nutzerkennung (von Clerk) zusammen mit Ihrem
-        aktuellen Guthabenstand sowie Zeitpunkten von Gutschriften und Abbuchungen. Dies ist zur
-        Vertragserfüllung erforderlich (Art. 6 Abs. 1 lit. b DSGVO).
+        Die Nutzung des Editors ist kostenlos. Für den Export einer Datei wird ein tägliches
+        Kontingent (&bdquo;Credits&ldquo;) verbraucht, das sich alle 24 Stunden automatisch wieder
+        auffüllt. Hierzu speichern wir in unserer Datenbank Ihre Nutzerkennung (von Clerk) zusammen
+        mit dem aktuellen Kontingentstand und dem Zeitpunkt der letzten Auffüllung. Rechtsgrundlage
+        ist die Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO). Es findet keine Zahlungsabwicklung
+        statt.
       </p>
 
       <h2>7. Hochgeladene Cover-Bilder</h2>
@@ -115,8 +116,7 @@ export default function DatenschutzPage() {
       <h2>9. Cookies und lokale Speicherung</h2>
       <p>
         Wir setzen nur technisch notwendige Cookies ein (insbesondere die Session-Cookies von Clerk
-        für den Login und von Stripe während des Bezahlvorgangs). Ein Einwilligungsbanner ist hierfür
-        nicht erforderlich (§ 25 Abs. 2 TDDDG).
+        für den Login). Ein Einwilligungsbanner ist hierfür nicht erforderlich (§ 25 Abs. 2 TDDDG).
       </p>
       <p>
         Zusätzlich speichern wir im lokalen Speicher (localStorage) Ihres Browsers Ihre
@@ -124,25 +124,19 @@ export default function DatenschutzPage() {
         Aufruf erhalten bleibt. Diese Daten verlassen Ihren Browser nicht und werden nicht zu
         Analyse- oder Marketingzwecken verwendet.
       </p>
-      <p>
-        Wir verwenden keine Analyse-, Tracking- oder Marketing-Tools.
-      </p>
 
       <h2>10. Speicherdauer</h2>
       <p>
-        Kontodaten und Guthabenstände speichern wir für die Dauer Ihres Nutzerkontos. Nach Löschung
-        des Kontos werden die zugehörigen Daten entfernt, soweit keine gesetzlichen
-        Aufbewahrungspflichten (insbesondere handels- und steuerrechtliche Fristen von bis zu 10
-        Jahren für Rechnungs- und Zahlungsdaten) entgegenstehen. Server-Logfiles werden nach kurzer
-        Zeit automatisch gelöscht bzw. anonymisiert.
+        Kontodaten und Kontingentstände speichern wir für die Dauer Ihres Nutzerkontos. Nach
+        Löschung des Kontos werden die zugehörigen Daten entfernt. Server-Logfiles werden nach
+        kurzer Zeit automatisch gelöscht bzw. anonymisiert.
       </p>
 
       <h2>11. Datenübermittlung in Drittländer</h2>
       <p>
-        Einzelne der genannten Dienstleister (Vercel, Clerk, Stripe Inc.) können Daten in den USA
-        verarbeiten. Die Übermittlung erfolgt auf Grundlage von Standardvertragsklauseln der
-        EU-Kommission gemäß Art. 46 DSGVO und – soweit die Anbieter zertifiziert sind – des EU-US
-        Data Privacy Framework.
+        Einzelne der genannten Dienstleister (Vercel, Clerk) können Daten in den USA verarbeiten. Die
+        Übermittlung erfolgt auf Grundlage von Standardvertragsklauseln der EU-Kommission gemäß Art.
+        46 DSGVO und – soweit die Anbieter zertifiziert sind – des EU-US Data Privacy Framework.
       </p>
 
       <h2>12. Änderungen dieser Datenschutzerklärung</h2>

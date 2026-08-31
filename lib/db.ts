@@ -1,13 +1,12 @@
 import { sql } from '@vercel/postgres';
 
-const FREE_STARTER_CREDITS = 3;
+const FREE_DAILY_CREDITS = 3;
 
 let tableEnsured = false;
 
 /**
- * Legt die Tabelle an, falls sie noch nicht existiert. Wird bei jedem
- * Prozessstart einmal ausgeführt (idempotent - CREATE TABLE IF NOT EXISTS),
- * danach übersprungen, um unnötige Round-Trips zu vermeiden.
+ * Legt die Tabelle an bzw. ergänzt fehlende Spalten. Wird bei jedem
+ * Prozessstart einmal ausgeführt (idempotent), danach übersprungen.
  */
 async function ensureTable() {
   if (tableEnsured) return;
@@ -19,20 +18,43 @@ async function ensureTable() {
       updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     )
   `;
+  // Zeitpunkt der letzten Tagesauffüllung - nachträglich ergänzt.
+  await sql`
+    ALTER TABLE user_credits
+    ADD COLUMN IF NOT EXISTS last_refill_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  `;
   tableEnsured = true;
 }
 
 /**
+ * Füllt das Guthaben alle 24 Stunden wieder auf das Tageskontingent auf.
+ * GREATEST(...) sorgt dafür, dass ein höheres Guthaben (falls später doch
+ * einmal manuell vergeben) nicht nach unten korrigiert wird.
+ */
+async function refillIfDue(userId: string): Promise<void> {
+  await sql`
+    UPDATE user_credits
+    SET credits = GREATEST(credits, ${FREE_DAILY_CREDITS}),
+        last_refill_at = NOW(),
+        updated_at = NOW()
+    WHERE user_id = ${userId}
+      AND last_refill_at <= NOW() - INTERVAL '24 hours'
+  `;
+}
+
+/**
  * Stellt sicher, dass für den Nutzer ein Datensatz existiert. Neue Nutzer
- * bekommen die Start-Credits gutgeschrieben. Gibt den aktuellen Stand zurück.
+ * bekommen das Tageskontingent gutgeschrieben. Führt anschließend die
+ * fällige Tagesauffüllung durch und gibt den aktuellen Stand zurück.
  */
 async function ensureUserRow(userId: string): Promise<number> {
   await ensureTable();
   await sql`
     INSERT INTO user_credits (user_id, credits)
-    VALUES (${userId}, ${FREE_STARTER_CREDITS})
+    VALUES (${userId}, ${FREE_DAILY_CREDITS})
     ON CONFLICT (user_id) DO NOTHING
   `;
+  await refillIfDue(userId);
   const { rows } = await sql<{ credits: number }>`
     SELECT credits FROM user_credits WHERE user_id = ${userId}
   `;
@@ -43,7 +65,10 @@ export async function getBalance(userId: string): Promise<number> {
   return ensureUserRow(userId);
 }
 
-/** Schreibt Credits gut (nach erfolgreichem Kauf über Stripe). */
+/**
+ * Schreibt Credits gut. Aktuell ungenutzt (keine Käufe im kostenlosen
+ * Modell) - bleibt für eine spätere Wiedereinführung des Kaufmodells.
+ */
 export async function addCredits(userId: string, amount: number): Promise<number> {
   await ensureUserRow(userId);
   const { rows } = await sql<{ credits: number }>`

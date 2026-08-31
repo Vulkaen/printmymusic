@@ -10,7 +10,6 @@ import { exportPoster } from '@/lib/export';
 import { ExportFormat, ExportQuality } from '@/types/poster';
 import { cn } from '@/lib/utils';
 import { useCredits } from '@/lib/useCredits';
-import { BuyCredits } from '@/components/editor/BuyCredits';
 
 const FORMAT_OPTIONS: { value: ExportFormat; label: string }[] = [
   { value: 'png', label: 'PNG' },
@@ -50,7 +49,7 @@ export function ExportControls() {
 
       if (!consumeRes.ok) {
         if (consumeRes.status === 402) {
-          setError('Nicht genug Credits. Lade neue Credits auf, um weiter zu exportieren.');
+          setError('Dein Tageskontingent ist aufgebraucht. In 24 Stunden gibt es wieder frische Credits.');
         } else if (consumeRes.status === 401) {
           setError('Bitte einloggen, um zu exportieren.');
         } else {
@@ -112,11 +111,9 @@ export function ExportControls() {
       {isSignedIn && credits !== null && (
         <div className="flex items-center gap-1.5 text-xs text-muted">
           <Coins className="h-3.5 w-3.5" />
-          {credits} {credits === 1 ? 'credit' : 'credits'} remaining
+          {credits} {credits === 1 ? 'credit' : 'credits'} left today · refills every 24 h
         </div>
       )}
-
-      {isSignedIn && <BuyCredits />}
 
       {error && <p className="text-xs text-red-600">{error}</p>}
 
