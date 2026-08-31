@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-canvas: #fafaf9;
+  --color-ink: #111110;
+  --color-border: #e7e5e2;
+  --color-muted: #8a8782;
+  --color-surface: #ffffff;
+  --color-primary: #111110;
+  --color-primary-foreground: #ffffff;
+}
+
+.dark {
+  --color-canvas: #121212;
+  --color-ink: #f5f4f2;
+  --color-border: #2a2a28;
+  --color-muted: #9c9992;
+  --color-surface: #1c1c1a;
+  --color-primary: #f5f4f2;
+  --color-primary-foreground: #111110;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: var(--color-ink);
+  color: var(--color-canvas);
+}
+
+/* Schlanke Scrollbar für Editor-Sidebar */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 999px;
+}
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
