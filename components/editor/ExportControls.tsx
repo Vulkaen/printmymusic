@@ -1,13 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import { Download, Loader2 } from 'lucide-react';
+import { Download, Loader2, Coins } from 'lucide-react';
+import { SignInButton } from '@clerk/nextjs';
 import { usePosterStore } from '@/lib/store';
 import { Select } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { exportPoster } from '@/lib/export';
 import { ExportFormat, ExportQuality } from '@/types/poster';
 import { cn } from '@/lib/utils';
+import { useCredits } from '@/lib/useCredits';
 
 const FORMAT_OPTIONS: { value: ExportFormat; label: string }[] = [
   { value: 'png', label: 'PNG' },
@@ -27,17 +29,40 @@ export function ExportControls() {
   const [isExporting, setIsExporting] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const { credits, isSignedIn, refresh } = useCredits();
 
   async function handleExport() {
     setIsExporting(true);
     setError(null);
     try {
+      // Credits serverseitig abbuchen, BEVOR der eigentliche (rein
+      // clientseitige) Export-Vorgang startet. So lässt sich das nicht
+      // umgehen, selbst wenn jemand die Export-Funktion direkt aufruft.
+      const consumeRes = await fetch('/api/credits/consume', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cost: 1 })
+      });
+      const consumeData = await consumeRes.json();
+
+      if (!consumeRes.ok) {
+        if (consumeRes.status === 402) {
+          setError('Nicht genug Credits. Lade neue Credits auf, um weiter zu exportieren.');
+        } else if (consumeRes.status === 401) {
+          setError('Bitte einloggen, um zu exportieren.');
+        } else {
+          setError(consumeData.message ?? 'Export fehlgeschlagen.');
+        }
+        return;
+      }
+
       const fileName = `${state.poster.artistName}-${state.poster.albumName}`
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/(^-|-$)/g, '') || 'poster';
 
       await exportPoster(state, { format, fileName }, setStatus);
+      refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Export fehlgeschlagen.');
     } finally {
@@ -81,21 +106,37 @@ export function ExportControls() {
         </div>
       </div>
 
+      {isSignedIn && credits !== null && (
+        <div className="flex items-center gap-1.5 text-xs text-muted">
+          <Coins className="h-3.5 w-3.5" />
+          {credits} {credits === 1 ? 'credit' : 'credits'} remaining
+        </div>
+      )}
+
       {error && <p className="text-xs text-red-600">{error}</p>}
 
-      <Button onClick={handleExport} disabled={isExporting} size="lg" className="w-full">
-        {isExporting ? (
-          <>
-            <Loader2 className="h-4 w-4 animate-spin" />
-            {status ?? 'Generating print file...'}
-          </>
-        ) : (
-          <>
+      {isSignedIn ? (
+        <Button onClick={handleExport} disabled={isExporting} size="lg" className="w-full">
+          {isExporting ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              {status ?? 'Generating print file...'}
+            </>
+          ) : (
+            <>
+              <Download className="h-4 w-4" />
+              Export poster (1 credit)
+            </>
+          )}
+        </Button>
+      ) : (
+        <SignInButton mode="modal">
+          <Button size="lg" className="w-full">
             <Download className="h-4 w-4" />
-            Export poster
-          </>
-        )}
-      </Button>
+            Sign in to export
+          </Button>
+        </SignInButton>
+      )}
     </div>
   );
 }
