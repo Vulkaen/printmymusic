@@ -10,6 +10,7 @@ import { exportPoster } from '@/lib/export';
 import { ExportFormat, ExportQuality } from '@/types/poster';
 import { cn } from '@/lib/utils';
 import { useCredits } from '@/lib/useCredits';
+import { BuyCredits } from '@/components/editor/BuyCredits';
 
 const FORMAT_OPTIONS: { value: ExportFormat; label: string }[] = [
   { value: 'png', label: 'PNG' },
@@ -112,6 +113,8 @@ export function ExportControls() {
           {credits} {credits === 1 ? 'credit' : 'credits'} remaining
         </div>
       )}
+
+      {isSignedIn && <BuyCredits />}
 
       {error && <p className="text-xs text-red-600">{error}</p>}
 

@@ -43,6 +43,18 @@ export async function getBalance(userId: string): Promise<number> {
   return ensureUserRow(userId);
 }
 
+/** Schreibt Credits gut (nach erfolgreichem Kauf über Stripe). */
+export async function addCredits(userId: string, amount: number): Promise<number> {
+  await ensureUserRow(userId);
+  const { rows } = await sql<{ credits: number }>`
+    UPDATE user_credits
+    SET credits = credits + ${amount}, updated_at = NOW()
+    WHERE user_id = ${userId}
+    RETURNING credits
+  `;
+  return rows[0]?.credits ?? 0;
+}
+
 /**
  * Bucht Credits atomar ab (eine einzelne UPDATE-Anweisung mit Bedingung
  * "genug Guthaben vorhanden" verhindert Race Conditions und negative
