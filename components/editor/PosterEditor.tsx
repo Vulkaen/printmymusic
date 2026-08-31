@@ -21,7 +21,7 @@ export function PosterEditor() {
   const t = useT();
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex flex-col md:h-full">
       <div className="border-b border-border px-5 py-5">
         <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted">
           {t('section.music')}
@@ -29,7 +29,7 @@ export function PosterEditor() {
         <AlbumSearch />
       </div>
 
-      <div className="flex-1 overflow-y-auto px-5">
+      <div className="px-5 md:flex-1 md:overflow-y-auto">
         <AccordionRoot defaultValue={['layout', 'colors']}>
           <AccordionSection value="layout" title={t('section.layout')} icon={<LayoutGrid className="h-4 w-4" />}>
             <TemplateSelector />

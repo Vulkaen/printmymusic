@@ -58,35 +58,39 @@ export default function CreatePage() {
   const t = useT();
 
   return (
-    <div className="flex h-screen flex-col bg-canvas md:flex-row">
+    <div className="flex min-h-[100svh] flex-col bg-canvas md:h-screen md:flex-row">
       <Suspense fallback={null}>
         <ShareableUrlSync />
       </Suspense>
 
-      <header className="flex items-center justify-between border-b border-border bg-surface px-4 py-3 md:hidden">
-        <Link href="/" className="flex items-center gap-2 text-sm font-semibold text-ink">
-          <ArrowLeft className="h-4 w-4" />
-          PrintMyMusic
-        </Link>
-        <div className="flex items-center gap-2">
-          <LanguageToggle />
-          <ThemeToggle />
-          <SignedOut>
-            <SignInButton mode="modal">
-              <button className="rounded-lg border border-border px-2.5 py-1.5 text-xs font-medium text-ink transition-colors hover:border-ink/30">
-                {t('nav.signIn')}
-              </button>
-            </SignInButton>
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-        </div>
-      </header>
+      {/* Mobile: Kopfzeile + Live-Vorschau bleiben beim Scrollen oben fixiert */}
+      <div className="sticky top-0 z-30 md:hidden">
+        <header className="flex items-center justify-between gap-2 border-b border-border bg-surface px-4 py-2.5">
+          <Link href="/" aria-label="PrintMyMusic" className="flex shrink-0 items-center gap-2 text-ink">
+            <ArrowLeft className="h-4 w-4" />
+            <span className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
+              <Sparkles className="h-3 w-3" />
+            </span>
+          </Link>
+          <div className="flex items-center gap-1.5">
+            <LanguageToggle />
+            <ThemeToggle />
+            <SignedOut>
+              <SignInButton mode="modal">
+                <button className="whitespace-nowrap rounded-lg border border-border px-2.5 py-2 text-xs font-medium text-ink transition-colors hover:border-ink/30">
+                  {t('nav.signIn')}
+                </button>
+              </SignInButton>
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+          </div>
+        </header>
 
-      {/* Mobile: Preview oben */}
-      <div className="preview-stage flex h-[46vh] items-center justify-center border-b border-border p-4 md:hidden">
-        <PosterPreview />
+        <div className="preview-stage flex h-[40vh] min-h-[220px] items-center justify-center border-b border-border p-3">
+          <PosterPreview />
+        </div>
       </div>
 
       {/* Editor Sidebar */}
@@ -114,7 +118,7 @@ export default function CreatePage() {
             </SignedIn>
           </div>
         </div>
-        <div className="h-[calc(100%-57px)]">
+        <div className="md:h-[calc(100%-57px)]">
           <PosterEditor />
         </div>
       </aside>

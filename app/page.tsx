@@ -68,22 +68,22 @@ export default function LandingPage() {
     <main className="min-h-screen bg-canvas">
       {/* Hero: feste dunkle Markenfläche, unabhängig vom App-Farbmodus */}
       <div style={{ backgroundColor: INK }}>
-        <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
-          <div className="flex items-center gap-2.5 font-grotesk text-sm font-bold tracking-tight text-[#F5F4F2]">
+        <header className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-4 py-4 sm:gap-3 sm:px-6 sm:py-6">
+          <div className="flex shrink-0 items-center gap-2.5 font-grotesk text-sm font-bold tracking-tight text-[#F5F4F2]">
             <span
               className="flex h-6 w-6 items-center justify-center rounded-full border-2"
               style={{ borderColor: GOLD }}
             >
               <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: GOLD }} />
             </span>
-            PrintMyMusic
+            <span className="hidden sm:inline">PrintMyMusic</span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-3">
             <LanguageToggle variant="dark" />
             <ThemeToggle />
             <SignedOut>
               <SignInButton mode="modal">
-                <button className="rounded-lg border border-[#3A3833] px-3 py-2 text-sm font-medium text-[#F5F4F2] transition-colors hover:border-[#F5F4F2]/50">
+                <button className="whitespace-nowrap rounded-lg border border-[#3A3833] px-2.5 py-2 text-xs font-medium text-[#F5F4F2] transition-colors hover:border-[#F5F4F2]/50 sm:text-sm">
                   {t('nav.signIn')}
                 </button>
               </SignInButton>
@@ -95,24 +95,26 @@ export default function LandingPage() {
           </div>
         </header>
 
-        <section className="mx-auto grid max-w-6xl gap-12 px-6 pb-20 pt-8 md:grid-cols-2 md:items-center md:gap-8 md:pb-28 md:pt-12">
+        <section className="mx-auto grid max-w-6xl gap-10 px-4 pb-16 pt-6 sm:gap-12 sm:px-6 sm:pb-20 sm:pt-8 md:grid-cols-2 md:items-center md:gap-8 md:pb-28 md:pt-12">
           <div>
-            <h1 className="font-grotesk text-5xl font-bold leading-[1.05] tracking-tight text-[#F5F4F2] sm:text-6xl">
+            <h1 className="font-grotesk text-4xl font-bold leading-[1.1] tracking-tight text-[#F5F4F2] sm:text-5xl sm:leading-[1.05] lg:text-6xl">
               {t('landing.heroTitle1')}
               <br />
               {t('landing.heroTitle2')}
             </h1>
-            <p className="mt-6 max-w-md text-lg text-[#C9C6BC]">{t('landing.heroSub')}</p>
+            <p className="mt-5 max-w-md text-base text-[#C9C6BC] sm:mt-6 sm:text-lg">
+              {t('landing.heroSub')}
+            </p>
             <Link
               href="/create"
-              className="mt-8 inline-flex items-center rounded-lg px-6 py-3.5 text-sm font-semibold text-[#14120F] shadow-lg transition-transform hover:scale-[1.02] active:scale-[0.98]"
+              className="mt-7 inline-flex w-full items-center justify-center rounded-lg px-6 py-3.5 text-sm font-semibold text-[#14120F] shadow-lg transition-transform hover:scale-[1.02] active:scale-[0.98] sm:mt-8 sm:w-auto"
               style={{ backgroundColor: GOLD }}
             >
               {t('landing.ctaStart')}
             </Link>
           </div>
 
-          <div className="relative mx-auto h-[300px] w-full max-w-xs sm:h-[360px] md:h-[400px]">
+          <div className="relative mx-auto h-[280px] w-full max-w-xs sm:h-[360px] md:h-[400px]">
             {STACK.map((item, i) => (
               <div
                 key={item.template}
@@ -136,12 +138,14 @@ export default function LandingPage() {
 
       {/* Template-Katalog: keine gleichförmigen Karten, sondern locker
           gestreute Poster-Ausschnitte wie auf einer Pinnwand. */}
-      <section className="bg-canvas px-6 py-20">
+      <section className="bg-canvas px-4 py-16 sm:px-6 sm:py-20">
         <div className="mx-auto max-w-6xl">
-          <h2 className="font-grotesk text-3xl font-bold text-ink">{t('landing.showcaseTitle')}</h2>
+          <h2 className="font-grotesk text-2xl font-bold text-ink sm:text-3xl">
+            {t('landing.showcaseTitle')}
+          </h2>
           <p className="mt-2 max-w-md text-muted">{t('landing.showcaseSub')}</p>
 
-          <div className="mt-14 flex flex-wrap justify-center gap-x-10 gap-y-14">
+          <div className="mt-10 flex flex-wrap justify-center gap-x-6 gap-y-12 sm:mt-14 sm:gap-x-10 sm:gap-y-14">
             {SHOWCASE.map((item) => (
               <div
                 key={item.template}
