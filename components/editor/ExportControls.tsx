@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Download, Loader2, Coins } from 'lucide-react';
 import { SignInButton } from '@clerk/nextjs';
+import { track } from '@vercel/analytics';
 import { usePosterStore } from '@/lib/store';
 import { Select } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
@@ -44,7 +45,7 @@ export function ExportControls() {
       const consumeRes = await fetch('/api/credits/consume', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cost })
+        body: JSON.stringify({ cost, format, quality: state.dpi })
       });
 
       if (!consumeRes.ok) {
@@ -64,6 +65,7 @@ export function ExportControls() {
         .replace(/(^-|-$)/g, '') || 'poster';
 
       await exportPoster(state, { format, fileName });
+      track('export', { format, quality: state.dpi, customCover: isCustomCover });
       refresh();
     } catch {
       setError(t('export.errGeneric'));

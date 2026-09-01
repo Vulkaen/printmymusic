@@ -23,6 +23,18 @@ async function ensureTable() {
     ALTER TABLE user_credits
     ADD COLUMN IF NOT EXISTS last_refill_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
   `;
+  // Ein Datensatz pro erfolgreichem Export (Credits wurden abgebucht).
+  // Dient der Auswertung, welche Formate/Qualitäten wie oft genutzt werden.
+  await sql`
+    CREATE TABLE IF NOT EXISTS export_events (
+      id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      format TEXT,
+      quality TEXT,
+      cost INTEGER NOT NULL,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `;
   tableEnsured = true;
 }
 
@@ -104,4 +116,22 @@ export async function consumeCredits(
   }
 
   return { ok: true, credits: rows[0]!.credits };
+}
+
+/**
+ * Protokolliert einen erfolgreichen Export. Wird nach erfolgreicher
+ * Credit-Abbuchung aufgerufen. Fehler hier dürfen den Export nicht
+ * verhindern - der Aufrufer fängt sie ab.
+ */
+export async function recordExport(
+  userId: string,
+  format: string | null,
+  quality: string | null,
+  cost: number
+): Promise<void> {
+  await ensureTable();
+  await sql`
+    INSERT INTO export_events (user_id, format, quality, cost)
+    VALUES (${userId}, ${format}, ${quality}, ${cost})
+  `;
 }

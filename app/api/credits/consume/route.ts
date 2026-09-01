@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
-import { consumeCredits } from '@/lib/db';
+import { consumeCredits, recordExport } from '@/lib/db';
 import { rateLimit, tooManyRequests } from '@/lib/rateLimit';
 
 export const runtime = 'nodejs';
@@ -19,9 +19,13 @@ export async function POST(request: NextRequest) {
   // eigene, personalisierte Cover existiert (Phase 3), wird von dort aus
   // cost: 2 übergeben.
   let cost = 1;
+  let format: string | null = null;
+  let quality: string | null = null;
   try {
     const body = await request.json();
     if (body?.cost === 2) cost = 2;
+    if (typeof body?.format === 'string') format = body.format.slice(0, 16);
+    if (typeof body?.quality === 'string') quality = body.quality.slice(0, 16);
   } catch {
     // kein Body übergeben - Standardkosten bleiben bei 1
   }
@@ -38,6 +42,14 @@ export async function POST(request: NextRequest) {
         },
         { status: 402 }
       );
+    }
+
+    // Export protokollieren - Fehler dabei dürfen die Antwort nicht
+    // beeinflussen (Credits sind bereits abgebucht, Export läuft).
+    try {
+      await recordExport(userId, format, quality, cost);
+    } catch {
+      // Logging fehlgeschlagen - bewusst ignoriert.
     }
 
     return NextResponse.json({ credits: result.credits });

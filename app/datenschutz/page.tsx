@@ -91,9 +91,12 @@ export default function DatenschutzPage() {
         Die Nutzung des Editors ist kostenlos. Für den Export einer Datei wird ein tägliches
         Kontingent (&bdquo;Credits&ldquo;) verbraucht, das sich alle 24 Stunden automatisch wieder
         auffüllt. Hierzu speichern wir in unserer Datenbank Ihre Nutzerkennung (von Clerk) zusammen
-        mit dem aktuellen Kontingentstand und dem Zeitpunkt der letzten Auffüllung. Rechtsgrundlage
-        ist die Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO). Es findet keine Zahlungsabwicklung
-        statt.
+        mit dem aktuellen Kontingentstand und dem Zeitpunkt der letzten Auffüllung. Zusätzlich
+        halten wir zu jedem Export einen Protokolleintrag mit Ihrer Nutzerkennung, dem Zeitpunkt
+        sowie dem gewählten Dateiformat und der Qualitätsstufe fest, um die Nutzung des Angebots
+        auszuwerten. Rechtsgrundlage ist die Vertragserfüllung sowie unser berechtigtes Interesse
+        an einer statistischen Auswertung (Art. 6 Abs. 1 lit. b und lit. f DSGVO). Es findet keine
+        Zahlungsabwicklung statt.
       </p>
 
       <h2>7. Hochgeladene Cover-Bilder</h2>
